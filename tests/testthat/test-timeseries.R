@@ -1,4 +1,30 @@
 test_that("get_datetime_seq returns requested period", {
+  expect_error(
+    get_datetime_seq(
+      year = 2024,
+      tzone = "UTC",
+      resolution_mins = 60,
+      fullyear = FALSE
+    )
+  )
+  expect_error(
+    get_datetime_seq(
+      year = 2024,
+      tzone = "UTC",
+      resolution_mins = 60,
+      fullyear = FALSE,
+      start_date = as.Date("2024-01-01")
+    )
+  )
+
+  seq_hourly <- get_datetime_seq(
+    year = 2025,
+    tzone = "UTC",
+    resolution_mins = 60,
+    fullyear = TRUE
+  )
+  expect_equal(length(seq_hourly), 8760)
+
   seq_hourly <- get_datetime_seq(
     year = 2024,
     tzone = "UTC",
@@ -7,7 +33,6 @@ test_that("get_datetime_seq returns requested period", {
     start_date = as.Date("2024-01-01"),
     end_date = as.Date("2024-01-02")
   )
-
   expect_equal(length(seq_hourly), 24)
   expect_equal(lubridate::tz(seq_hourly), "UTC")
 })

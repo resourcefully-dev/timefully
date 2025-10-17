@@ -172,54 +172,6 @@ increase_timeseries_resolution <- function(dtf, resolution_mins, method = c('int
 }
 
 
-#' Decrease resolution of a numeric vector
-#'
-#' @param y original numeric vector
-#' @param n integer, number of intra-values (counting the original value as the first one)
-#' @param method character, being `average`, `first` or `sum` as valid options
-#'
-#' @return numeric vector
-#' @keywords internal
-#'
-#' @importFrom dplyr group_by summarise pull tibble
-#' @importFrom rlang .data
-#'
-decrease_numeric_resolution <- function(y, n, method = c('average', 'first', 'sum')) {
-  if ((length(y)%%n) > 0) {
-    stop("Error decreasing resolution: the original vector should have a length multiple of `n`.")
-  }
-
-  if (method == 'average') {
-    return(
-      tibble(
-        idx = rep(seq(1, length(y)/n), each = n),
-        y = y
-      ) |>
-        group_by(.data$idx) |>
-        summarise(y = mean(y)) |>
-        pull(y) |>
-        as.numeric()
-    )
-  } else if (method == 'first') {
-    return(
-      y[seq(1, length(y), n)]
-    )
-  } else if (method == 'sum') {
-    return(
-      tibble(
-        idx = rep(seq(1, length(y)/n), each = n),
-        y = y
-      ) |>
-        group_by(.data$idx) |>
-        summarise(y = sum(y)) |>
-        pull(y) |>
-        as.numeric()
-    )
-  } else {
-    stop("Error: method not valid")
-  }
-}
-
 #' Decrease time resolution of timeseries data frame
 #'
 #' @param dtf data.frame or tibble, first column of name `datetime` being 

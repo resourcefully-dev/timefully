@@ -26,8 +26,7 @@
 #'
 get_datetime_seq <- function(year, tzone, resolution_mins, fullyear = TRUE, start_date = NULL, end_date = NULL) {
     if (!fullyear && is.null(start_date) && is.null(end_date)) {
-        message("if start_date and end_date are not provided, fullyear must be TRUE")
-        return(NULL)
+        stop("Error: if start_date and end_date are not provided, fullyear must be TRUE")
     }
     if (fullyear) {
         return(
@@ -39,8 +38,7 @@ get_datetime_seq <- function(year, tzone, resolution_mins, fullyear = TRUE, star
         )
     } else {
         if (is.null(start_date) || is.null(end_date)) {
-            message("both start_date and end_date must be provided")
-            return(NULL)
+            stop("Error: both start_date and end_date must be provided")
         }
         return(
             seq.POSIXt(
