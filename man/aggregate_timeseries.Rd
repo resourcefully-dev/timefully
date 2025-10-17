@@ -21,13 +21,11 @@ tibble
 The first column \code{datetime} will be kept.
 }
 \examples{
-# Example data set with 2 identical building profiles
-dtf2 <- dplyr::select(
-  dtf, datetime, building1 = building, building2 = building
+building_flows <- data.frame(
+  datetime = as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:3 * 3600,
+  building1 = c(2.1, 2.5, 2.3, 2.0),
+  building2 = c(1.0, 1.1, 0.9, 1.2)
 )
-head(dtf2)
-
-# Aggregate the total building demand
-head(aggregate_timeseries(dtf2, varname = "total_buildings"))
+aggregate_timeseries(building_flows, varname = "total_building")
 
 }

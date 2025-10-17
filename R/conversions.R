@@ -2,6 +2,10 @@
 #'
 #' @param time_num Numeric time value (hour-based)
 #'
+#' @examples
+#' convert_time_num_to_period(1.5)
+#' convert_time_num_to_period(c(0.25, 2))
+#'
 #' @importFrom lubridate hours minutes
 #' @export
 #'
@@ -19,11 +23,16 @@ convert_time_num_to_period <- function(time_num) {
 #' @param milliseconds logical, whether the timestamp is in milliseconds or seconds
 #'
 #' @return numeric
+#'
+#' @examples
+#' date_to_timestamp(as.Date("2024-01-01"))
+#' date_to_timestamp(as.POSIXct("2024-01-01 08:00:00", tz = "UTC"), milliseconds = FALSE)
+#'
 #' @export
 #'
 #' @importFrom lubridate force_tz as_datetime
 #'
-date_to_timestamp <- function(date, tzone = "Europe/Paris", milliseconds = T) {
+date_to_timestamp <- function(date, tzone = "Europe/Paris", milliseconds = TRUE) {
   timestamp <- as.integer(
     force_tz(
       as_datetime(date, tz = "UTC"),
@@ -48,6 +57,13 @@ date_to_timestamp <- function(date, tzone = "Europe/Paris", milliseconds = T) {
 #' @return date vector
 #' @export
 #'
+#' @examples
+#' dttm <- as.POSIXct(
+#'   c("2024-01-01 08:00:00", "2024-01-02 09:00:00", "2024-01-08 10:00:00"),
+#'   tz = "UTC"
+#' )
+#' get_week_from_datetime(dttm)
+#'
 #' @importFrom lubridate as_date year isoweek
 #'
 get_week_from_datetime <- function(dttm) {
@@ -56,6 +72,9 @@ get_week_from_datetime <- function(dttm) {
 
 
 #' Summarise dataframe with weekly total column values
+#' 
+#' Converts the numeric columns of a time-series data frame to total values per week (sum). 
+#' Note that if the input values are in power units (e.g., kW), the output values will be in energy units (e.g., kWh).
 #'
 #' @param dtf data.frame or tibble, first column of name `datetime` being 
 #' of class datetime and rest of columns being numeric
@@ -65,6 +84,9 @@ get_week_from_datetime <- function(dttm) {
 #'
 #' @importFrom dplyr mutate select group_by summarise_if mutate_if arrange
 #' @importFrom rlang .data
+#'
+#' @examples
+#' get_week_total(dtf[1:100, ])
 #'
 get_week_total <- function(dtf) {
     resolution <- as.numeric(dtf$datetime[2] - dtf$datetime[1], units = "mins")

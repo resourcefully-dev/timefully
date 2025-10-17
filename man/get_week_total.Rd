@@ -14,5 +14,10 @@ of class datetime and rest of columns being numeric}
 tibble
 }
 \description{
-Summarise dataframe with weekly total column values
+Converts the numeric columns of a time-series data frame to total values per week (sum).
+Note that if the input values are in power units (e.g., kW), the output values will be in energy units (e.g., kWh).
+}
+\examples{
+get_week_total(dtf[1:100, ])
+
 }

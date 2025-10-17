@@ -25,4 +25,6 @@ Imports:
     rlang,
     purrr,
     dygraphs
-
+URL: https://github.com/resourcefully-dev/timefully/, https://resourcefully-dev.github.io/timefully/
+BugReports: https://github.com/resourcefully-dev/timefully/issues
+Language: en-US

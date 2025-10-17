@@ -27,17 +27,18 @@ tibble
 Adapt time-series dataframe to timezone, date range and fill gaps
 }
 \examples{
+# Example data set
+print(dtf)
 
 # Original date range
 range(dtf$datetime)
 
-# Timeseries adapted to January 2021
 dtf2 <- adapt_timeseries(
- dtf, 
- start_date = as.Date("2021-01-01"), 
- end_date = as.Date("2021-01-31"),
- tzone = "Europe/Paris", 
- fill_gaps = FALSE
+  dtf,
+  start_date = as.Date("2021-01-01"), 
+  end_date = as.Date("2021-01-31"),
+  tzone = "America/New_York", 
+  fill_gaps = FALSE
 )
 
 # New date range

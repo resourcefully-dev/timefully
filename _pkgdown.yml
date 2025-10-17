@@ -1,0 +1,36 @@
+url: https://resourcefully-dev.github.io/timefully/
+template:
+  bootstrap: 5
+  bootswatch: flatly
+
+navbar:
+  structure:
+    left:  [home, intro, reference, articles, tutorials, news]
+    right: [github]
+
+reference:
+  - title: Time range
+  - contents:
+    - get_datetime_seq
+    - adapt_timeseries
+  - title: Time resolution
+  - contents:
+    - get_time_resolution
+    - change_timeseries_resolution
+  - title: Timeseries data
+  - contents:
+    - aggregate_timeseries
+    - fill_from_past
+    - fill_down_until
+    - fill_datetime
+  - title: Visualisation
+  - contents:
+    - plot_ts
+  - title: Time conversions
+  - contents:
+    - convert_time_num_to_period
+    - date_to_timestamp
+    - get_week_from_datetime
+    - get_week_total
+
+

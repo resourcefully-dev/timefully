@@ -15,3 +15,9 @@ filled datetime sequence vector
 \description{
 Fill NA values of a datetime sequence vector
 }
+\examples{
+incomplete_seq <- as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:4 * 3600
+incomplete_seq[c(2, 3)] <- NA
+fill_datetime(incomplete_seq)
+
+}

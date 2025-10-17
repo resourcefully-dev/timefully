@@ -21,3 +21,11 @@ tibble
 \description{
 Fill down tibble columns until a maximum number of time slots
 }
+\examples{
+down_data <- data.frame(
+  datetime = as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:5 * 3600,
+  temperature = c(15, 15, NA, NA, NA, 16)
+)
+fill_down_until(down_data, "temperature", max_timeslots = 2)
+
+}

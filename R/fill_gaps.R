@@ -15,6 +15,13 @@
 #' @return tibble or data.frame
 #' @export
 #'
+#' @examples
+#' past_data <- data.frame(
+#'   datetime = as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:3 * 3600,
+#'   consumption = c(1.2, NA, NA, 2.5)
+#' )
+#' fill_from_past(past_data, "consumption", back = 1)
+#'
 fill_from_past <- function(dtf, varnames, back=24) {
   tbl_to_fill <- dtf[varnames]
   for (col in varnames) {
@@ -57,6 +64,13 @@ fill_from_past <- function(dtf, varnames, back=24) {
 #'
 #' @importFrom dplyr lag
 #'
+#' @examples
+#' down_data <- data.frame(
+#'   datetime = as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:5 * 3600,
+#'   temperature = c(15, 15, NA, NA, NA, 16)
+#' )
+#' fill_down_until(down_data, "temperature", max_timeslots = 2)
+#'
 fill_down_until <- function(dtf, varnames, max_timeslots = 1) {
 
   for (var_name in varnames) {
@@ -87,6 +101,11 @@ fill_down_until <- function(dtf, varnames, max_timeslots = 1) {
 #' @export
 #'
 #' @importFrom lubridate minutes
+#'
+#' @examples
+#' incomplete_seq <- as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:4 * 3600
+#' incomplete_seq[c(2, 3)] <- NA
+#' fill_datetime(incomplete_seq)
 #'
 fill_datetime <- function(dttm) {
   # detect the time interval of the sequence

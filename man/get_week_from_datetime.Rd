@@ -15,3 +15,11 @@ date vector
 \description{
 Week date from datetime value
 }
+\examples{
+dttm <- as.POSIXct(
+  c("2024-01-01 08:00:00", "2024-01-02 09:00:00", "2024-01-08 10:00:00"),
+  tz = "UTC"
+)
+get_week_from_datetime(dttm)
+
+}

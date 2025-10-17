@@ -27,7 +27,7 @@
 #' @importFrom dygraphs dygraph dyLegend dyOptions dyCSS
 #'
 #' @examples
-#' plot_ts(dtf, title = "Building power flows", ylab = "kW")
+#' plot_ts(dtf, ylab = "kW", legend_show = "onmouseover")
 #'
 plot_ts <- function(df, title = NULL, xlab = NULL, ylab = NULL,
                     legend_show = "auto", legend_width = 250,

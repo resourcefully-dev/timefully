@@ -12,3 +12,8 @@ convert_time_num_to_period(time_num)
 \description{
 Convert numeric time value to a datetime period (hour-based)
 }
+\examples{
+convert_time_num_to_period(1.5)
+convert_time_num_to_period(c(0.25, 2))
+
+}

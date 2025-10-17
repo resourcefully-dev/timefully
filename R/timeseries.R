@@ -14,6 +14,16 @@
 #'
 #' @importFrom lubridate as_datetime dmy round_date minutes dmy_hm
 #'
+#' @examples
+#' get_datetime_seq(
+#'   year = 2024,
+#'   tzone = "UTC",
+#'   resolution_mins = 120,
+#'   fullyear = FALSE,
+#'   start_date = as.Date("2024-01-01"),
+#'   end_date = as.Date("2024-01-03")
+#' )
+#'
 get_datetime_seq <- function(year, tzone, resolution_mins, fullyear = TRUE, start_date = NULL, end_date = NULL) {
     if (!fullyear && is.null(start_date) && is.null(end_date)) {
         message("if start_date and end_date are not provided, fullyear must be TRUE")
@@ -56,14 +66,12 @@ get_datetime_seq <- function(year, tzone, resolution_mins, fullyear = TRUE, star
 #' @export
 #'
 #' @examples
-#' # Example data set with 2 identical building profiles
-#' dtf2 <- dplyr::select(
-#'   dtf, datetime, building1 = building, building2 = building
+#' building_flows <- data.frame(
+#'   datetime = as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:3 * 3600,
+#'   building1 = c(2.1, 2.5, 2.3, 2.0),
+#'   building2 = c(1.0, 1.1, 0.9, 1.2)
 #' )
-#' head(dtf2)
-#'
-#' # Aggregate the total building demand
-#' head(aggregate_timeseries(dtf2, varname = "total_buildings"))
+#' aggregate_timeseries(building_flows, varname = "total_building")
 #'
 aggregate_timeseries <- function(dtf, varname, omit = NULL) {
   dtf2 <- dtf['datetime']
@@ -99,22 +107,23 @@ aggregate_timeseries <- function(dtf, varname, omit = NULL) {
 #' @export
 #'
 #' @examples
+#' # Example data set
+#' print(dtf)
 #' 
 #' # Original date range
 #' range(dtf$datetime)
 #' 
-#' # Timeseries adapted to January 2021
 #' dtf2 <- adapt_timeseries(
-#'  dtf, 
-#'  start_date = as.Date("2021-01-01"), 
-#'  end_date = as.Date("2021-01-31"),
-#'  tzone = "Europe/Paris", 
-#'  fill_gaps = FALSE
+#'   dtf,
+#'   start_date = as.Date("2021-01-01"), 
+#'   end_date = as.Date("2021-01-31"),
+#'   tzone = "America/New_York", 
+#'   fill_gaps = FALSE
 #' )
 #' 
 #' # New date range
 #' range(dtf2$datetime)
-#' 
+#'
 adapt_timeseries <- function(dtf, start_date, end_date, tzone = NULL, fill_gaps = FALSE) {
 
   # 1. Change timezone

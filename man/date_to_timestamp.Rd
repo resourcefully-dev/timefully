@@ -4,7 +4,7 @@
 \alias{date_to_timestamp}
 \title{Convert date or datetime value to timestamp number}
 \usage{
-date_to_timestamp(date, tzone = "Europe/Paris", milliseconds = T)
+date_to_timestamp(date, tzone = "Europe/Paris", milliseconds = TRUE)
 }
 \arguments{
 \item{date}{date or datetime value}
@@ -18,4 +18,9 @@ numeric
 }
 \description{
 Convert date or datetime value to timestamp number
+}
+\examples{
+date_to_timestamp(as.Date("2024-01-01"))
+date_to_timestamp(as.POSIXct("2024-01-01 08:00:00", tz = "UTC"), milliseconds = FALSE)
+
 }

@@ -22,3 +22,11 @@ tibble or data.frame
 If back index ( NA index - \code{back}) is lower than zero then the it is filled with the first value of the data frame.
 If the value in the back index is also NA, it iterates backwards until finding a non-NA value.
 }
+\examples{
+past_data <- data.frame(
+  datetime = as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:3 * 3600,
+  consumption = c(1.2, NA, NA, 2.5)
+)
+fill_from_past(past_data, "consumption", back = 1)
+
+}

@@ -18,7 +18,10 @@ numeric
 Return the time resolution of a datetime sequence
 }
 \examples{
-resolution <- get_time_resolution(dtf$datetime)
-print(resolution)
+seq_15m <- as.POSIXct(
+  c("2024-01-01 00:00:00", "2024-01-01 00:15:00", "2024-01-01 00:30:00"),
+  tz = "UTC"
+)
+get_time_resolution(seq_15m, units = "mins")
 
 }

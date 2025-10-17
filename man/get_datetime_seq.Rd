@@ -32,3 +32,14 @@ vector of datetime values
 \description{
 Datetime sequence
 }
+\examples{
+get_datetime_seq(
+  year = 2024,
+  tzone = "UTC",
+  resolution_mins = 120,
+  fullyear = FALSE,
+  start_date = as.Date("2024-01-01"),
+  end_date = as.Date("2024-01-03")
+)
+
+}

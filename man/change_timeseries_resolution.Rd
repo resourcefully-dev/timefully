@@ -22,16 +22,15 @@ tibble
 Change time resolution of a time-series data frame
 }
 \examples{
-# Example time-series data set: time resolution 15 minutes
-head(dtf)
-
-# Change time resolution to 60 minutes
-# It is decreasing time resolution, so we use the `average` method
-head(change_timeseries_resolution(
-  dtf,
+fifteen_min <- data.frame(
+  datetime = as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:7 * 900,
+  load = c(10, 12, 14, 16, 14, 12, 10, 8)
+)
+change_timeseries_resolution(
+  fifteen_min,
   resolution_out = 60,
   method = "average"
-))
+)
 
 
 
