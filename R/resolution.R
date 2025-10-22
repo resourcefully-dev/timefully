@@ -18,6 +18,23 @@ get_time_resolution <- function(dttm_seq, units = 'mins') {
   as.numeric(dttm_seq[2] - dttm_seq[1], units)
 }
 
+#' Return the time resolution of a time series dataframe
+#'
+#' @param dtf data.frame or tibble, first column of name `datetime` being 
+#' of class datetime and rest of columns being numeric
+#' @param units character being one of "auto", "secs", "mins", "hours", "days" and "weeks"
+#'
+#' @return numeric
+#' @export
+#'
+#' @examples
+#' get_timeseries_resolution(dtf, units = "mins")
+#'
+get_timeseries_resolution <- function(dtf, units = 'mins') {
+  dttm_seq <- dtf$datetime
+  return( get_time_resolution(dttm_seq, units) )
+}
+
 
 #' Change time resolution of a time-series data frame
 #'
@@ -46,7 +63,7 @@ get_time_resolution <- function(dttm_seq, units = 'mins') {
 #'
 #'
 change_timeseries_resolution <- function(dtf, resolution_out, method) {
-  current_resolution <- get_time_resolution(dtf$datetime, units = "mins")
+  current_resolution <- get_timeseries_resolution(dtf, units = "mins")
   if (current_resolution == resolution_out) {
     return(dtf)
   } else if (resolution_out > current_resolution) {
@@ -137,22 +154,22 @@ increase_numeric_resolution <- function(y, n, method = c('interpolate', 'repeat'
 #' Increase datetime vector resolution
 #'
 #' @param y vector of datetime values
-#' @param resolution_mins integer, interval of minutes between two consecutive datetime values
+#' @param resolution integer, interval of minutes between two consecutive datetime values
 #'
 #' @return datetime vector
 #' @keywords internal
 #'
 #' @importFrom lubridate minutes as_datetime tz
 #'
-increase_datetime_resolution <- function(y, resolution_mins) {
-  seq.POSIXt(y[1], y[length(y)]+(y[2]-y[1])-minutes(resolution_mins), by = paste(resolution_mins, 'min')) |> as_datetime(tz = tz(y))
+increase_datetime_resolution <- function(y, resolution) {
+  seq.POSIXt(y[1], y[length(y)]+(y[2]-y[1])-minutes(resolution), by = paste(resolution, 'min')) |> as_datetime(tz = tz(y))
 }
 
 #' Increase time resolution of a timeseries data frame
 #'
 #' @param dtf data.frame or tibble, first column of name `datetime` being 
 #' of class datetime and rest of columns being numeric
-#' @param resolution_mins integer, interval of minutes between two consecutive datetime values
+#' @param resolution integer, interval of minutes between two consecutive datetime values
 #' @param method character, being `interpolate`, `repeat` or `divide` as valid options.
 #' See `increase_numeric_resolution` function for more information.
 #'
@@ -161,12 +178,12 @@ increase_datetime_resolution <- function(y, resolution_mins) {
 #'
 #' @importFrom dplyr tibble select_if
 #'
-increase_timeseries_resolution <- function(dtf, resolution_mins, method = c('interpolate', 'repeat', 'divide')) {
-  new_df <- tibble(datetime = increase_datetime_resolution(dtf$datetime, resolution_mins))
-  current_resolution <- get_time_resolution(dtf$datetime, units = "mins")
+increase_timeseries_resolution <- function(dtf, resolution, method = c('interpolate', 'repeat', 'divide')) {
+  new_df <- tibble(datetime = increase_datetime_resolution(dtf$datetime, resolution))
+  current_resolution <- get_timeseries_resolution(dtf, units = "mins")
   numeric_df <- dtf |> select_if(is.numeric)
   for (col in colnames(numeric_df)) {
-    new_df[[col]] <- increase_numeric_resolution(numeric_df[[col]], n = current_resolution/resolution_mins, method)
+    new_df[[col]] <- increase_numeric_resolution(numeric_df[[col]], n = current_resolution/resolution, method)
   }
   return( new_df )
 }
@@ -176,7 +193,7 @@ increase_timeseries_resolution <- function(dtf, resolution_mins, method = c('int
 #'
 #' @param dtf data.frame or tibble, first column of name `datetime` being 
 #' of class datetime and rest of columns being numeric
-#' @param resolution_mins integer, interval of minutes between two consecutive datetime values
+#' @param resolution integer, interval of minutes between two consecutive datetime values
 #' @param method character, being `average`, `first` or `sum` as valid options
 #'
 #' @return tibble
@@ -186,9 +203,9 @@ increase_timeseries_resolution <- function(dtf, resolution_mins, method = c('int
 #' @importFrom lubridate floor_date
 #' @importFrom rlang .data
 #'
-decrease_timeseries_resolution <- function(dtf, resolution_mins, method = c('average', 'first', 'sum')) {
+decrease_timeseries_resolution <- function(dtf, resolution, method = c('average', 'first', 'sum')) {
   dtf2 <- dtf |>
-    mutate(datetime = floor_date(.data$datetime, paste(resolution_mins, 'minute')))
+    mutate(datetime = floor_date(.data$datetime, paste(resolution, 'minute')))
   if (method == 'average') {
     return(
       dtf2 |>

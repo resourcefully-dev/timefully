@@ -8,6 +8,11 @@ test_that("get_time_resolution returns minute difference", {
     get_time_resolution(seq_15m, units = "mins"),
     15
   )
+
+  expect_equal(
+    get_timeseries_resolution(dtf, units = "mins"),
+    15
+  )
 })
 
 test_that("change_timeseries_resolution averages to hourly data", {

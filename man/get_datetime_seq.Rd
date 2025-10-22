@@ -2,44 +2,31 @@
 % Please edit documentation in R/timeseries.R
 \name{get_datetime_seq}
 \alias{get_datetime_seq}
-\title{Datetime sequence}
+\title{Date time sequence with time zone and resolution}
 \usage{
-get_datetime_seq(
-  year,
-  tzone,
-  resolution_mins,
-  fullyear = TRUE,
-  start_date = NULL,
-  end_date = NULL
-)
+get_datetime_seq(start_date, end_date, tzone, resolution)
 }
 \arguments{
-\item{year}{integer, year of the datetime sequence}
+\item{start_date}{Date, start date of the output datetime sequence}
 
-\item{tzone}{character, time-zone of the datetime sequence}
+\item{end_date}{Date, end date of the output datetime sequence (included)}
 
-\item{resolution_mins}{integer, interval of minutes between two consecutive datetime values}
+\item{tzone}{character, desired time-zone of the datetime sequence}
 
-\item{fullyear}{boolean, whether to return a full-year sequence}
-
-\item{start_date}{Date, if \code{fullyear} is \code{FALSE} set a starting date. Ignored when \code{fullyear} is \code{TRUE}.}
-
-\item{end_date}{Date, if \code{fullyear} is \code{FALSE} set a final date. Ignored when \code{fullyear} is \code{TRUE}.}
+\item{resolution}{integer, interval of minutes between two consecutive datetime values}
 }
 \value{
 vector of datetime values
 }
 \description{
-Datetime sequence
+Date time sequence with time zone and resolution
 }
 \examples{
 get_datetime_seq(
-  year = 2024,
-  tzone = "UTC",
-  resolution_mins = 120,
-  fullyear = FALSE,
   start_date = as.Date("2024-01-01"),
-  end_date = as.Date("2024-01-03")
+  end_date = as.Date("2024-01-03"),
+  tzone = "UTC",
+  resolution = 120
 )
 
 }

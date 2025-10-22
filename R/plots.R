@@ -33,7 +33,7 @@ plot_ts <- function(df, title = NULL, xlab = NULL, ylab = NULL,
                     legend_show = "auto", legend_width = 250,
                     group = NULL, width = NULL, height = NULL, ...) {
   dygraph(df, main = title, xlab = xlab, ylab = ylab, group = group, width = width, height = height) |>
-    dyLegend(show = legend_show, width = legend_width, showZeroValues = FALSE) |>
+    dyLegend(show = legend_show, width = legend_width, showZeroValues = TRUE) |>
     dyOptions(retainDateWindow = TRUE, useDataTimezone = TRUE, ...) |>
     dyCSS(system.file("www", "dystyle.css", package = "timefully"))
 }

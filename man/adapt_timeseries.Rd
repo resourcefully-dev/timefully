@@ -12,13 +12,13 @@ of class datetime and rest of columns being numeric}
 
 \item{start_date}{Date, start date of the output datetime sequence}
 
-\item{end_date}{Date, end date of the output datetime sequence}
+\item{end_date}{Date, end date of the output datetime sequence (included)}
 
-\item{tzone}{character, time-zone of the datetime sequence.
+\item{tzone}{character, desired time-zone of the datetime sequence.
 If NULL, the timezone of \code{dtf$datetime} is kept.}
 
-\item{fill_gaps}{boolean, whether to fill gaps based on same yearweekday
-and daytime, and if not available, with last week same day same hour}
+\item{fill_gaps}{boolean, whether to fill gaps based on
+same weekday and hour from past data (See \code{fill_from_past} function).}
 }
 \value{
 tibble
@@ -35,9 +35,9 @@ range(dtf$datetime)
 
 dtf2 <- adapt_timeseries(
   dtf,
-  start_date = as.Date("2021-01-01"), 
+  start_date = as.Date("2021-01-01"),
   end_date = as.Date("2021-01-31"),
-  tzone = "America/New_York", 
+  tzone = "America/New_York",
   fill_gaps = FALSE
 )
 

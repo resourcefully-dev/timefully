@@ -12,13 +12,17 @@ reference:
   - title: Time range
   - contents:
     - get_datetime_seq
+    - get_yearly_datetime_seq
     - adapt_timeseries
   - title: Time resolution
   - contents:
     - get_time_resolution
+    - get_timeseries_resolution
     - change_timeseries_resolution
   - title: Timeseries data
   - contents:
+    - get_timeseries_tzone
+    - change_timeseries_tzone
     - aggregate_timeseries
     - fill_from_past
     - fill_down_until

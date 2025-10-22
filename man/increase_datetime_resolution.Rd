@@ -4,12 +4,12 @@
 \alias{increase_datetime_resolution}
 \title{Increase datetime vector resolution}
 \usage{
-increase_datetime_resolution(y, resolution_mins)
+increase_datetime_resolution(y, resolution)
 }
 \arguments{
 \item{y}{vector of datetime values}
 
-\item{resolution_mins}{integer, interval of minutes between two consecutive datetime values}
+\item{resolution}{integer, interval of minutes between two consecutive datetime values}
 }
 \value{
 datetime vector

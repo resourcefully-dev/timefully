@@ -6,7 +6,7 @@
 \usage{
 increase_timeseries_resolution(
   dtf,
-  resolution_mins,
+  resolution,
   method = c("interpolate", "repeat", "divide")
 )
 }
@@ -14,7 +14,7 @@ increase_timeseries_resolution(
 \item{dtf}{data.frame or tibble, first column of name \code{datetime} being
 of class datetime and rest of columns being numeric}
 
-\item{resolution_mins}{integer, interval of minutes between two consecutive datetime values}
+\item{resolution}{integer, interval of minutes between two consecutive datetime values}
 
 \item{method}{character, being \code{interpolate}, \code{repeat} or \code{divide} as valid options.
 See \code{increase_numeric_resolution} function for more information.}
