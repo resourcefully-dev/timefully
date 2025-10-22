@@ -24,6 +24,7 @@ reference:
     - get_timeseries_tzone
     - change_timeseries_tzone
     - aggregate_timeseries
+    - add_extra_days
     - fill_from_past
     - fill_down_until
     - fill_datetime
