@@ -53,17 +53,17 @@ of class datetime and rest of columns being numeric</p></dd>
 
 
 <dt id="arg-end-date">end_date<a class="anchor" aria-label="anchor" href="#arg-end-date"></a></dt>
-<dd><p>Date, end date of the output datetime sequence</p></dd>
+<dd><p>Date, end date of the output datetime sequence (included)</p></dd>
 
 
 <dt id="arg-tzone">tzone<a class="anchor" aria-label="anchor" href="#arg-tzone"></a></dt>
-<dd><p>character, time-zone of the datetime sequence.
+<dd><p>character, desired time-zone of the datetime sequence.
 If NULL, the timezone of <code>dtf$datetime</code> is kept.</p></dd>
 
 
 <dt id="arg-fill-gaps">fill_gaps<a class="anchor" aria-label="anchor" href="#arg-fill-gaps"></a></dt>
-<dd><p>boolean, whether to fill gaps based on same yearweekday
-and daytime, and if not available, with last week same day same hour</p></dd>
+<dd><p>boolean, whether to fill gaps based on
+same weekday and hour from past data (See <code>fill_from_past</code> function).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -96,15 +96,15 @@ and daytime, and if not available, with last week same day same hour</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dtf2</span> <span class="op">&lt;-</span> <span class="fu">adapt_timeseries</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">dtf</span>,</span></span>
-<span class="r-in"><span>  start_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2021-01-01"</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>  start_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2021-01-01"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  end_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2021-01-31"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  tzone <span class="op">=</span> <span class="st">"America/New_York"</span>, </span></span>
+<span class="r-in"><span>  tzone <span class="op">=</span> <span class="st">"America/New_York"</span>,</span></span>
 <span class="r-in"><span>  fill_gaps <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># New date range</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">dtf2</span><span class="op">$</span><span class="va">datetime</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2021-01-01 00:00:00 EST" "2021-01-30 23:45:00 EST"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2021-01-01 00:00:00 EST" "2021-01-31 23:45:00 EST"</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
