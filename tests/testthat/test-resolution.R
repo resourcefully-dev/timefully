@@ -23,7 +23,7 @@ test_that("change_timeseries_resolution averages to hourly data", {
 
   hourly <- change_timeseries_resolution(
     fifteen_min,
-    resolution_out = 60,
+    resolution = 60,
     method = "first"
   )
 
@@ -33,7 +33,7 @@ test_that("change_timeseries_resolution averages to hourly data", {
 
   hourly <- change_timeseries_resolution(
     fifteen_min,
-    resolution_out = 60,
+    resolution = 60,
     method = "sum"
   )
 
@@ -43,13 +43,13 @@ test_that("change_timeseries_resolution averages to hourly data", {
 
   hourly <- change_timeseries_resolution(
     fifteen_min,
-    resolution_out = 60,
+    resolution = 60,
     method = "average"
   )
 
   expect_equal(
     dtf,
-    change_timeseries_resolution(dtf, resolution_out = 15)
+    change_timeseries_resolution(dtf, resolution = 15)
   )
   expect_equal(nrow(hourly), 2)
   expect_equal(
@@ -66,7 +66,7 @@ test_that("change_timeseries_resolution works increasing resolution", {
 
   higher_res <- change_timeseries_resolution(
     fifteen_min,
-    resolution_out = 5,
+    resolution = 5,
     method = "repeat"
   )
 
@@ -76,7 +76,7 @@ test_that("change_timeseries_resolution works increasing resolution", {
 
   higher_res <- change_timeseries_resolution(
     fifteen_min,
-    resolution_out = 5,
+    resolution = 5,
     method = "interpolate"
   )
 
@@ -86,7 +86,7 @@ test_that("change_timeseries_resolution works increasing resolution", {
 
     higher_res <- change_timeseries_resolution(
     fifteen_min,
-    resolution_out = 5,
+    resolution = 5,
     method = "divide"
   )
 
@@ -105,14 +105,14 @@ test_that("error when method is invalid", {
   expect_error(
     change_timeseries_resolution(
       dtf,
-      resolution_out = 60,
+      resolution = 60,
       method = "invalid_method"
     )
   )
   expect_error(
     change_timeseries_resolution(
       dtf,
-      resolution_out = 5,
+      resolution = 5,
       method = "invalid_method"
     )
   )

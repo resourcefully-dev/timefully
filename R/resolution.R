@@ -40,7 +40,7 @@ get_timeseries_resolution <- function(dtf, units = 'mins') {
 #'
 #' @param dtf data.frame or tibble, first column of name `datetime` being 
 #' of class datetime and rest of columns being numeric
-#' @param resolution_out integer, desired interval of minutes between two consecutive datetime values
+#' @param resolution integer, desired interval of minutes between two consecutive datetime values
 #' @param method character, being `interpolate`, `repeat` or `divide` if the resolution has to be increased,
 #' or `average`, `first` or `sum` if the resolution has to be decreased. See Examples for more information.
 #'
@@ -56,25 +56,25 @@ get_timeseries_resolution <- function(dtf, units = 'mins') {
 #' )
 #' change_timeseries_resolution(
 #'   fifteen_min,
-#'   resolution_out = 60,
+#'   resolution = 60,
 #'   method = "average"
 #' )
 #'
 #'
 #'
-change_timeseries_resolution <- function(dtf, resolution_out, method) {
+change_timeseries_resolution <- function(dtf, resolution, method) {
   current_resolution <- get_timeseries_resolution(dtf, units = "mins")
-  if (current_resolution == resolution_out) {
+  if (current_resolution == resolution) {
     return(dtf)
-  } else if (resolution_out > current_resolution) {
+  } else if (resolution > current_resolution) {
     if (method %in% c("average", "first", "sum")) {
-      return(decrease_timeseries_resolution(dtf, resolution_out, method))
+      return(decrease_timeseries_resolution(dtf, resolution, method))
     } else {
       stop("Error: method not valid for decreasing resolution")
     }
   } else {
     if (method %in%  c("interpolate", "repeat", "divide")) {
-      return(increase_timeseries_resolution(dtf, resolution_out, method))
+      return(increase_timeseries_resolution(dtf, resolution, method))
     } else {
       stop("Error: method not valid for increasing resolution")
     }

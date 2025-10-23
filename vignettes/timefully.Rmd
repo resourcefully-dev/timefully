@@ -1,0 +1,109 @@
+---
+title: "Get started with timefully"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Get started with timefully}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.align = "center",
+  warning = FALSE,
+  message = FALSE
+)
+
+library(timefully)
+library(dplyr)
+library(lubridate)
+```
+
+The goal of **timefully** is to make it straightforward to reshape,
+re-timezone and visualise regularly spaced energy time series. This tutorial
+walks through the core workflow using the package’s bundled data frame
+`timefully::dtf`.
+
+## Explore the sample data
+
+`dtf` contains a full year of quarter-hour values recorded in the
+**`Europe/Amsterdam` timezone during 2023**. We start by
+zooming into one week so plots stay compact.
+
+```{r sample-data}
+week_amsterdam <- timefully::dtf |>
+  filter(datetime >= as.POSIXct("2023-06-01 00:00:00", tz = "Europe/Amsterdam"),
+         datetime <  as.POSIXct("2023-06-08 00:00:00", tz = "Europe/Amsterdam"))
+
+glimpse(week_amsterdam)
+```
+
+The helper `plot_ts()` produces an interactive dygraph so we can inspect the
+raw values.
+
+```{r plot-week}
+plot_ts(week_amsterdam, ylab = "kW", legend_show = "always",
+        title = "Quarter-hour readings (Europe/Amsterdam)")
+```
+
+## Change the time resolution
+
+To produce hourly averages we call `change_timeseries_resolution()` with the
+desired resolution (in minutes) and the aggregation method. The first column
+remains a datetime column and the numeric columns are summarised accordingly.
+
+```{r change-resolution}
+week_hourly <- change_timeseries_resolution(
+  week_amsterdam,
+  resolution = 60,
+  method = "average"
+)
+
+plot_ts(week_hourly, ylab = "kW", legend_show = "always",
+        title = "Hourly averages")
+```
+
+## Convert to a different timezone
+
+If the data should be reported in another timezone, but keeping the same date range, 
+we can use function `change_timeseries_tzone()`:
+
+```{r change-tz}
+week_paris <- change_timeseries_tzone(week_amsterdam, tzone = "America/Los_Angeles")
+
+tz(week_amsterdam$datetime[1])
+tz(week_paris$datetime[1])
+
+plot_ts(week_paris, ylab = "kW", legend_show = "always")
+```
+
+Note that the data points are moved in time to reflect the new timezone, so
+the daily patterns shift accordingly. This is used to preserve the local time
+context of the data. If you want to keep the same clock times
+but just change the timezone label, use `lubridate::force_tz()` instead.
+
+
+## Adapt to a new date range
+
+Finally, `adapt_timeseries()` lets us change both the date range and the timezone
+in one step. Here we request ten days of Paris time starting on 1 June 2025.
+The function fills any missing slots using the most recent data with the same
+weekday and time of day, falling back to `fill_from_past()` when necessary.
+
+```{r adapt-timeseries}
+adapted_paris <- adapt_timeseries(
+  timefully::dtf,
+  start_date = as.Date("2025-06-01"),
+  end_date = as.Date("2025-06-10"),
+  tzone = "Europe/Paris",
+  fill_gaps = TRUE
+)
+
+plot_ts(adapted_paris, ylab = "kW", legend_show = "always",
+        title = "Adapted time series (1–10 June 2025)")
+```
+
+These building blocks can be combined with the rest of the package to prepare
+clean, timezone-aware time series ready for analysis or reporting.

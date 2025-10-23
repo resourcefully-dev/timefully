@@ -10,3 +10,4 @@ vignettes
 data-raw
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
+^data-raw$

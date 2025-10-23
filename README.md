@@ -7,7 +7,13 @@
 [![R-CMD-check](https://github.com/resourcefully-dev/timefully/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/resourcefully-dev/timefully/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of timefully is to facilitate the management of time-series data frames to adapt the timezone, time resolution, and date range.
+
+The goal of timefully is to facilitate the management of time-series data frames to adapt the timezone, 
+time resolution, and date range, as well as filling gaps and visualisation.
+
+You can see its main functionalities through the
+[Get started](https://resourcefully-dev.github.io/timefully/articles/timefully.html) article.
+
 
 ## Installation
 
@@ -17,42 +23,10 @@ You can install the development version of timefully like so:
 pak::pak("resourcefully-dev/timefully")
 ```
 
-## Getting started
+## Getting help
 
-If you have a time-series data frame like the following one:
-
-```r
-library(timefully)
-
-# Example data set
-print(dtf)
-
-# Original date range
-range(dtf$datetime)
-```
-
-You can adapt the original data to the desired time range:
-
-```r
-# Timeseries adapted to January 2021
-dtf2 <- adapt_timeseries(
-    dtf, 
-    start_date = as.Date("2021-01-01"), 
-    end_date = as.Date("2021-01-31"),
-    tzone = "America/New_York", 
-    fill_gaps = FALSE
-)
-
-# New date range
-range(dtf2$datetime)
-```
-
-Or change time resolution:
-
-```r
-change_timeseries_resolution(
-    dtf, resolution_out = 60, method = "average"
-)
-```
+If you encounter a clear bug, please open an issue with a minimal
+reproducible example on
+[GitHub](https://github.com/resourcefully-dev/timefully/issues).
 
 

@@ -4,13 +4,13 @@
 \alias{change_timeseries_resolution}
 \title{Change time resolution of a time-series data frame}
 \usage{
-change_timeseries_resolution(dtf, resolution_out, method)
+change_timeseries_resolution(dtf, resolution, method)
 }
 \arguments{
 \item{dtf}{data.frame or tibble, first column of name \code{datetime} being
 of class datetime and rest of columns being numeric}
 
-\item{resolution_out}{integer, desired interval of minutes between two consecutive datetime values}
+\item{resolution}{integer, desired interval of minutes between two consecutive datetime values}
 
 \item{method}{character, being \code{interpolate}, \code{repeat} or \code{divide} if the resolution has to be increased,
 or \code{average}, \code{first} or \code{sum} if the resolution has to be decreased. See Examples for more information.}
@@ -28,7 +28,7 @@ fifteen_min <- data.frame(
 )
 change_timeseries_resolution(
   fifteen_min,
-  resolution_out = 60,
+  resolution = 60,
   method = "average"
 )
 

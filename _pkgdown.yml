@@ -38,4 +38,9 @@ reference:
     - get_week_from_datetime
     - get_week_total
 
+articles:
+  - title: Articles
+    navbar: ~
+    contents:
+      - adapt-timeseries-gaps
 

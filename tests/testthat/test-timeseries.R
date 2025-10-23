@@ -101,6 +101,17 @@ test_that("adapt_timeseries adjusts date range with gaps", {
   dtf_example <- timefully::dtf |> dplyr::filter(
       lubridate::month(datetime) == 4
     )
+
+    adapted <- adapt_timeseries(
+      dtf_example,
+      start_date = as.Date("2025-04-01"),
+      end_date = as.Date("2025-04-30"),
+      tzone = "Europe/Paris",
+      fill_gaps = FALSE
+    )
+    adapted |>
+      dplyr::filter(is.na(solar))
+
   expect_warning(
     adapted <- adapt_timeseries(
       dtf_example,
