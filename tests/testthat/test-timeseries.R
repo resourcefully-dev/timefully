@@ -21,16 +21,17 @@ test_that("aggregate_timeseries sums numeric columns", {
   energy <- data.frame(
     datetime = as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:3 * 3600,
     building1 = c(2, 3, 4, 3),
-    building2 = c(1, 1, 2, 1)
+    building2 = c(1, 1, 2, 1),
+    solar = c(0, 0, 1, 2)
   )
 
-  aggregated <- aggregate_timeseries(energy, varname = "total")
+  aggregated <- aggregate_timeseries(energy, varname = "total", omit = "solar")
 
   expect_equal(
     aggregated$total,
     rowSums(energy[c("building1", "building2")])
   )
-  expect_equal(colnames(aggregated), c("datetime", "total"))
+  expect_equal(colnames(aggregated), c("datetime", "total", "solar"))
 })
 
 test_that("change_timeseries_tzone changes timezone and keeps year", {
@@ -81,6 +82,8 @@ test_that("adapt_timeseries adjusts timezone and year", {
 })
 
 test_that("adapt_timeseries adjusts timezone and fills gaps", {
+  dtf_example <- timefully::dtf
+  dtf_example$building[c(100, 250, 534, 785)] <- rep(NA, 4)  # remove random timeslots
   adapted <- adapt_timeseries(
     timefully::dtf,
     start_date = as.Date("2024-01-01"),
@@ -120,5 +123,24 @@ test_that("adapt_timeseries adjusts date range with gaps", {
       tzone = "Europe/Paris",
       fill_gaps = FALSE
     )
+  )
+})
+
+test_that("test add_extra_days works", {
+  dtf_example <- timefully::dtf |> dplyr::filter(
+    lubridate::month(datetime) == 2
+  )
+
+  extended <- add_extra_days(
+    dtf_example
+  )
+
+  expect_equal(
+    nrow(extended),
+    nrow(dtf_example) + 48*60/15 # 2 extra days
+  )
+  expect_equal(
+    lubridate::date(range(extended$datetime)),
+    c(as.Date("2023-01-31"), as.Date("2023-03-01"))
   )
 })

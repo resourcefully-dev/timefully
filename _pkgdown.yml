@@ -37,6 +37,10 @@ reference:
     - date_to_timestamp
     - get_week_from_datetime
     - get_week_total
+  - title: Time information
+  - contents:
+    - tic
+    - toc
 
 articles:
   - title: Articles

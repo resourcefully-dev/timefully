@@ -208,6 +208,14 @@ change_timeseries_tzone <- function(dtf, tzone = "Europe/Amsterdam") {
 
 
 #' Adapt time-series dataframe to timezone, date range and fill gaps
+#' 
+#' This function adapts the date range of a time series by reusing historical 
+#' patterns based on the same weekday occurrence within the year and decimal 
+#' hour of the day. It also can fill gaps in the data based on past data, 
+#' so it is recommended to use it for time series with weekly or yearly patterns
+#' (so for example energy demand but not solar generation).
+#' It can also adapt the timezone of the time series, for example if the data
+#' was stored in UTC but corresponds to a different timezone.
 #'
 #' @param dtf data.frame or tibble, first column of name `datetime` being
 #' of class datetime and rest of columns being numeric
