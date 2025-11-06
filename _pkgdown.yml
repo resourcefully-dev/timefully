@@ -19,12 +19,16 @@ reference:
     - get_time_resolution
     - get_timeseries_resolution
     - change_timeseries_resolution
-  - title: Timeseries data
+  - title: Timeseries utilites
   - contents:
     - get_timeseries_tzone
     - change_timeseries_tzone
     - aggregate_timeseries
     - add_extra_days
+    - check_timeseries_gaps
+  - title: Gap filling
+  - contents:
+    - fill_na
     - fill_from_past
     - fill_down_until
     - fill_datetime
@@ -37,6 +41,7 @@ reference:
     - date_to_timestamp
     - get_week_from_datetime
     - get_week_total
+    - to_hhmm
   - title: Time information
   - contents:
     - tic

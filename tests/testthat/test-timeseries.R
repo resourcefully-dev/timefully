@@ -144,3 +144,10 @@ test_that("test add_extra_days works", {
     c(as.Date("2023-01-31"), as.Date("2023-03-01"))
   )
 })
+
+test_that("check gaps is working", {
+  dtf_gaps <- dtf[c(1:100, 120:200), ]
+  expect_warning(
+    check_timeseries_gaps(dtf_gaps)
+  )
+})

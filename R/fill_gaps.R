@@ -1,5 +1,31 @@
 
-
+#' Fill gaps with a specific value
+#' 
+#' This is usefull when the gaps in a numeric timeseries can be
+#' filled with the same number (e.g. zero)
+#' 
+#' @param dtf data.frame or tibble, first column of name `datetime` being 
+#' of class datetime and rest of columns being numeric
+#' @param varnames character or vector of characters, 
+#' column names with NA values
+#' @param with numeric, value to fill NA values
+#'
+#' @return tibble or data.frame
+#' @export
+#'
+#' @examples
+#' past_data <- data.frame(
+#'   datetime = as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:3 * 3600,
+#'   consumption = c(1.2, NA, NA, 2.5)
+#' )
+#' fill_na(past_data, "consumption", with = 0)
+#'
+fill_na <- function(dtf, varnames, with = 0) {
+  for (col in varnames) {
+    dtf[is.na(dtf[[col]]), col] <- with
+  }
+  return( dtf )
+}
 
 #' Fill from past values
 #'

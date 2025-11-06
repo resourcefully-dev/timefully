@@ -413,3 +413,44 @@ dhours <- function(datetime) {
   lubridate::hour(datetime) +
     lubridate::minute(datetime) / 60
 }
+
+#' Check if there are any gaps in the datetime sequence
+#' 
+#' This means all rows a part from "datetime" will be NA.
+#' Note that timefully considers a full datetime sequence 
+#' when days are complete.
+#' 
+#' @param dtf data.frame or tibble, first column of name `datetime` being
+#' of class datetime and rest of columns being numeric
+#' 
+#' @importFrom dplyr tibble left_join
+#' 
+#' 
+#' @return tibble
+#' @export 
+#' 
+#' @examples
+#' # Sample just some hours
+#' dtf_gaps <- dtf[c(1:3, 7:10), ]
+#' 
+#' # Note that the full day is provided
+#' check_timeseries_gaps(
+#'    dtf_gaps
+#' )
+check_timeseries_gaps <- function(dtf) {
+  resolution <- get_timeseries_resolution(dtf)
+  tzone <- get_timeseries_tzone(dtf)
+  dtf_full <- tibble(
+    datetime = get_datetime_seq(
+      start_date = date(min(dtf$datetime)),
+      end_date = date(max(dtf$datetime)),
+      tzone = tzone, resolution = resolution
+    )
+  ) |>
+    left_join(dtf, by = "datetime")
+
+  if (nrow(dtf_full) > nrow(dtf)) {
+    warning("There are gaps in the data.")
+  }
+  return( dtf_full )
+}

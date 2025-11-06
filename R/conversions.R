@@ -105,3 +105,20 @@ get_week_total <- function(dtf) {
         ) |>
         arrange(.data$week)
 }
+
+#' Convert a number of minutes in string format "HH:MM"
+#' 
+#' @param mins integer, number of minutes (from 0 to 1439)
+#' 
+#' @return character
+#' @export
+#' 
+#' @examples 
+#' to_hhmm(75)
+#' 
+to_hhmm <- function(mins) {
+  if (mins > 1440) {
+    stop("`mins` must be lower than 1439 (23:59)")
+  }
+  sprintf("%02d:%02d", mins %/% 60, mins %% 60)
+}

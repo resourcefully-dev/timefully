@@ -35,3 +35,12 @@ test_that("fill_datetime reconstructs missing timestamps", {
     as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:4 * 3600
   )
 })
+
+test_that("fill_na works", {
+  past_data <- data.frame(
+    datetime = as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:3 * 3600,
+    consumption = c(1.2, NA, NA, 2.5)
+  )
+  clean_data <- fill_na(past_data, "consumption", with = 0)
+  expect_false(anyNA(clean_data))
+})

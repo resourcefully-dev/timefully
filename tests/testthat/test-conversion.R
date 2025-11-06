@@ -53,3 +53,13 @@ test_that("weekly totals are aggregated correctly", {
     )
   )
 })
+
+test_that("minutes are converted to string", {
+  expect_equal(
+    to_hhmm(75), "01:15"
+  )
+
+  expect_error(
+    to_hhmm(5000)
+  )
+})
