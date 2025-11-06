@@ -12,6 +12,7 @@
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/aggregate_timeseries.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/change_timeseries_resolution.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/change_timeseries_tzone.html</loc></url>
+<url><loc>https://resourcefully-dev.github.io/timefully/reference/check_timeseries_gaps.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/convert_time_num_to_period.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/date_to_timestamp.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/decrease_numeric_resolution.html</loc></url>
@@ -21,6 +22,7 @@
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/fill_datetime.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/fill_down_until.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/fill_from_past.html</loc></url>
+<url><loc>https://resourcefully-dev.github.io/timefully/reference/fill_na.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/get_datetime_seq.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/get_time_resolution.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/get_timeseries_resolution.html</loc></url>
@@ -35,6 +37,7 @@
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/interpolation.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/plot_ts.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/tic.html</loc></url>
+<url><loc>https://resourcefully-dev.github.io/timefully/reference/to_hhmm.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/toc.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/ywday.html</loc></url>
 </urlset>
