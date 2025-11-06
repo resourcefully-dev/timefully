@@ -341,30 +341,6 @@ adapt_timeseries <- function(dtf, start_date, end_date, tzone = NULL, fill_gaps 
           )
       }
     }
-
-    # # With full-year time-series, the 31st Dec is always missing
-    # # in dtf_utc_out and cannot be filled by ywday and dhours
-    # # (different number of weekdays according to the year).
-    # # However the last available 31st Dec from `dtf_utc_recentdata`
-    # # is at the same time not used in `dtf_utc_out`.
-    # dtf_utc_recentdata_missing_idx <- which(
-    #   !(dtf_utc_recentdata$ywday %in% dtf_utc_out$ywday)
-    # )
-    # # dtf_utc_recentdata$datetime0[dtf_utc_recentdata_missing_idx]
-    # Use `tail` because there could be multiple missing days 
-    # (e.g., leap years)
-    # dtf_utc_out_missing_idx <- tail(which(
-    #   !(dtf_utc_out$ywday %in% dtf_utc_recentdata$ywday)
-    # ), n = length(dtf_utc_recentdata_missing_idx))
-    # dtf_utc_out$datetime[dtf_utc_out_missing_idx]
-    
-    # if (length(dtf_utc_out_missing_idx) > 0) {
-    #   dtf_utc_out[dtf_utc_out_missing_idx, names(dtf[-1])] <-
-    #     dtf_utc_recentdata[dtf_utc_recentdata_missing_idx, paste0(names(dtf[-1]), "0")]
-    # }
-
-    # dtf_utc_out <- dtf_utc_out |>
-    #   select(names(dtf))
   }
 
   # 4. Change timezone to desired timezone
@@ -372,6 +348,13 @@ adapt_timeseries <- function(dtf, start_date, end_date, tzone = NULL, fill_gaps 
     tzone <- get_timeseries_tzone(dtf)
   }
   dtf_out <- change_timeseries_tzone(dtf_utc_out, tzone = tzone)
+
+  # 5. If `dtf` coincides with `dtf_out` make sure we use original values
+  dtf_out_in_dtf <- dtf_out$datetime %in% dtf$datetime
+  if (any(dtf_out_in_dtf)) {
+    dtf_in_dtf_out <- dtf$datetime %in% dtf_out$datetime
+    dtf_out[dtf_out_in_dtf, ] <- dtf[dtf_in_dtf_out, ]
+  }
 
   return(dtf_out)
 }
