@@ -19,7 +19,7 @@ column names with NA values}
 tibble or data.frame
 }
 \description{
-This is usefull when the gaps in a numeric timeseries can be
+This is useful when the gaps in a numeric timeseries can be
 filled with the same number (e.g. zero)
 }
 \examples{

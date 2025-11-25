@@ -1,7 +1,7 @@
 
 #' Fill gaps with a specific value
 #' 
-#' This is usefull when the gaps in a numeric timeseries can be
+#' This is useful when the gaps in a numeric timeseries can be
 #' filled with the same number (e.g. zero)
 #' 
 #' @param dtf data.frame or tibble, first column of name `datetime` being 

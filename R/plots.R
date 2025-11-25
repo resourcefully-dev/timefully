@@ -3,7 +3,7 @@
 #'
 #' First column of the `df` tibble must be a `datetime` or date variable.
 #' The rest of columns must be numeric of the same units. This functions makes
-#' use of `dygraphs` package to generate an HTML Dygraphs plot.
+#' use of `dygraphs` package to generate an HTML dygraphs plot.
 #'
 #' @param df data.frame or tibble, first column of name `datetime` being of class datetime and rest of columns being numeric
 #' @param title character, title of the plot (accepts HTML code)

@@ -49,7 +49,7 @@ dygraph
 \description{
 First column of the \code{df} tibble must be a \code{datetime} or date variable.
 The rest of columns must be numeric of the same units. This functions makes
-use of \code{dygraphs} package to generate an HTML Dygraphs plot.
+use of \code{dygraphs} package to generate an HTML dygraphs plot.
 }
 \examples{
 plot_ts(dtf, ylab = "kW", legend_show = "onmouseover")
