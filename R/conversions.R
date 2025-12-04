@@ -1,6 +1,8 @@
 #' Convert numeric time value to a datetime period (hour-based)
 #'
 #' @param time_num Numeric time value (hour-based)
+#' @return `lubridate::period` vector with hours and minutes corresponding to
+#' the numeric input.
 #'
 #' @examples
 #' convert_time_num_to_period(1.5)

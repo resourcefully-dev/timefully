@@ -6,8 +6,9 @@ Authors@R:
     person(given = "Marc", family = "Cañigueral", role = c("aut", "cre"),
            email = "marccanyigueral@gmail.com",
            comment = c(ORCID = "0000-0001-9724-5829"))
-Description: Functions to modify time-series data frames based on a desired
-    resolution, year or time-zone, as well as visualization tools.
+Description: Manage time-series data frames across time zones, resolutions, and date ranges, 
+    while filling gaps using weekday/hour patterns or simple fill helpers or plotting them interactively.
+    It is designed to work seamlessly with the tidyverse and dygraphs environments.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

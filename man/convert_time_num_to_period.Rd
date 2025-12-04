@@ -9,6 +9,10 @@ convert_time_num_to_period(time_num)
 \arguments{
 \item{time_num}{Numeric time value (hour-based)}
 }
+\value{
+\code{lubridate::period} vector with hours and minutes corresponding to
+the numeric input.
+}
 \description{
 Convert numeric time value to a datetime period (hour-based)
 }
