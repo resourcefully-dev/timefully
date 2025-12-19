@@ -1,0 +1,69 @@
+# Package index
+
+## Time range
+
+- [`get_datetime_seq()`](https://resourcefully-dev.github.io/timefully/reference/get_datetime_seq.md)
+  : Date time sequence with time zone and resolution
+- [`get_yearly_datetime_seq()`](https://resourcefully-dev.github.io/timefully/reference/get_yearly_datetime_seq.md)
+  : Yearly date time sequence with time zone and resolution
+- [`adapt_timeseries()`](https://resourcefully-dev.github.io/timefully/reference/adapt_timeseries.md)
+  : Adapt time-series dataframe to timezone, date range and fill gaps
+
+## Time resolution
+
+- [`get_time_resolution()`](https://resourcefully-dev.github.io/timefully/reference/get_time_resolution.md)
+  : Return the time resolution of a datetime sequence
+- [`get_timeseries_resolution()`](https://resourcefully-dev.github.io/timefully/reference/get_timeseries_resolution.md)
+  : Return the time resolution of a time series dataframe
+- [`change_timeseries_resolution()`](https://resourcefully-dev.github.io/timefully/reference/change_timeseries_resolution.md)
+  : Change time resolution of a time-series data frame
+
+## Timeseries utilites
+
+- [`get_timeseries_tzone()`](https://resourcefully-dev.github.io/timefully/reference/get_timeseries_tzone.md)
+  : Get the time zone of a time series dataframe
+- [`change_timeseries_tzone()`](https://resourcefully-dev.github.io/timefully/reference/change_timeseries_tzone.md)
+  : Adapt the timezone of a time series dataframe
+- [`aggregate_timeseries()`](https://resourcefully-dev.github.io/timefully/reference/aggregate_timeseries.md)
+  : Aggregate multiple timeseries columns to a single one
+- [`add_extra_days()`](https://resourcefully-dev.github.io/timefully/reference/add_extra_days.md)
+  : Add an extra day at the beginning and the end of datetime sequence
+  using the last and first day of the data
+- [`check_timeseries_gaps()`](https://resourcefully-dev.github.io/timefully/reference/check_timeseries_gaps.md)
+  : Check if there are any gaps in the datetime sequence
+
+## Gap filling
+
+- [`fill_na()`](https://resourcefully-dev.github.io/timefully/reference/fill_na.md)
+  : Fill gaps with a specific value
+- [`fill_from_past()`](https://resourcefully-dev.github.io/timefully/reference/fill_from_past.md)
+  : Fill from past values
+- [`fill_down_until()`](https://resourcefully-dev.github.io/timefully/reference/fill_down_until.md)
+  : Fill down tibble columns until a maximum number of time slots
+- [`fill_datetime()`](https://resourcefully-dev.github.io/timefully/reference/fill_datetime.md)
+  : Fill NA values of a datetime sequence vector
+
+## Visualisation
+
+- [`plot_ts()`](https://resourcefully-dev.github.io/timefully/reference/plot_ts.md)
+  : Interactive plot for time-series tibbles
+
+## Time conversions
+
+- [`convert_time_num_to_period()`](https://resourcefully-dev.github.io/timefully/reference/convert_time_num_to_period.md)
+  : Convert numeric time value to a datetime period (hour-based)
+- [`date_to_timestamp()`](https://resourcefully-dev.github.io/timefully/reference/date_to_timestamp.md)
+  : Convert date or datetime value to timestamp number
+- [`get_week_from_datetime()`](https://resourcefully-dev.github.io/timefully/reference/get_week_from_datetime.md)
+  : Week date from datetime value
+- [`get_week_total()`](https://resourcefully-dev.github.io/timefully/reference/get_week_total.md)
+  : Summarise dataframe with weekly total column values
+- [`to_hhmm()`](https://resourcefully-dev.github.io/timefully/reference/to_hhmm.md)
+  : Convert a number of minutes in string format "HH:MM"
+
+## Time information
+
+- [`tic()`](https://resourcefully-dev.github.io/timefully/reference/tic.md)
+  : Time difference start function
+- [`toc()`](https://resourcefully-dev.github.io/timefully/reference/toc.md)
+  : Time difference end function

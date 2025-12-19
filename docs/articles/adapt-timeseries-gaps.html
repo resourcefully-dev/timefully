@@ -105,14 +105,14 @@ Tuesdays, while 2024 (a leap year) has 53 of each. This means that we
 can’t find historical data for the “53rd Monday” or “53rd Tuesday” of
 2024, because they simply do not exist in 2023, so the output keeps
 <code>NA</code>.</p>
-<p><img src="problem.png" alt="Table comparing 2023, 2024 leap year, and 2025 weekdays showing extra 53rd Monday and Tuesday in 2024 and 2025 outlined in red." width="90%" style="display: block; margin: auto;"></p>
+<p><img src="problem.png" class="r-plt" alt="Table comparing 2023, 2024 leap year, and 2025 weekdays showing extra 53rd Monday and Tuesday in 2024 and 2025 outlined in red." width="90%" style="display: block; margin: auto;"></p>
 <p>To cover those extra weekdays we use a second step: whenever the join
 fails but the missing data is limited to at most two consecutive days
 (to cover leap years), we call <code><a href="../reference/fill_from_past.html">fill_from_past()</a></code> and copy
 the most recent observation for the same clock time one week earlier.
 This reaches back to the “52nd Monday/Tuesday” that does exit, which
 fills the previously empty rows.</p>
-<p><img src="solution.png" alt="Table highlighting that the 53rd Sunday from 2023 is unused while the 52nd Monday and Tuesday from 2024 supply data for 2025, marked in green." width="90%" style="display: block; margin: auto;"></p>
+<p><img src="solution.png" class="r-plt" alt="Table highlighting that the 53rd Sunday from 2023 is unused while the 52nd Monday and Tuesday from 2024 supply data for 2025, marked in green." width="90%" style="display: block; margin: auto;"></p>
 <p>This provides stable results across leap years without inventing new
 patterns that never existed in the input.</p>
 </div>
@@ -166,7 +166,7 @@ the input is simply too small to support the requested period.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

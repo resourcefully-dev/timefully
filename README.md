@@ -3,6 +3,8 @@
 
 
 <!-- badges: start -->
+[![CRAN
+status](https://www.r-pkg.org/badges/version/timefully)](https://cran.r-project.org/package=timefully)
 [![Codecov test coverage](https://codecov.io/gh/resourcefully-dev/timefully/graph/badge.svg)](https://app.codecov.io/gh/resourcefully-dev/timefully)
 [![R-CMD-check](https://github.com/resourcefully-dev/timefully/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/resourcefully-dev/timefully/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
@@ -17,7 +19,13 @@ You can see its main functionalities through the
 
 ## Installation
 
-You can install the development version of timefully like so:
+You can install the package from CRAN:
+
+``` r
+install.packages("timefully")
+```
+
+Or the development version of timefully like so:
 
 ``` r
 pak::pak("resourcefully-dev/timefully")
