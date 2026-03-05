@@ -30,7 +30,7 @@ test_that("complete_timeseries_datetime reconstructs missing timestamps", {
 
   expect_equal(
     nrow(filled),
-    10
+    96 # Full day
   )
 })
 

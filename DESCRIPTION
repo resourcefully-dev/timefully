@@ -1,7 +1,7 @@
 Package: timefully
 Type: Package
 Title: Time-Series Management Made Easy
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     person(given = "Marc", family = "Cañigueral", role = c("aut", "cre"),
            email = "marccanyigueral@gmail.com",

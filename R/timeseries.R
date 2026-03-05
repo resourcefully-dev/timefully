@@ -200,11 +200,16 @@ change_timeseries_tzone <- function(dtf, tzone = "Europe/Amsterdam") {
   dtf_tz_out_idx_shift_data <- !(dtf_tz_out$datetime %in% dtf_out$datetime)
   if (any(dtf_out_idx_missing_data)) {
     # Find the data values that have not been inserted in the output
-    #  Insert these values back in the output dataframe
-    dtf_out[dtf_out_idx_missing_data, -1] <- dtf_tz_out[
-      dtf_tz_out_idx_shift_data,
-      -1
-    ]
+    #  Insert these values back in the output dataframe (recycled if needed)
+    shift_rows <- dtf_tz_out[dtf_tz_out_idx_shift_data, -1, drop = FALSE]
+    if (nrow(shift_rows) > 0) {
+      fill_rows <- shift_rows[
+        rep_len(seq_len(nrow(shift_rows)), sum(dtf_out_idx_missing_data)),
+        ,
+        drop = FALSE
+      ]
+      dtf_out[dtf_out_idx_missing_data, -1] <- fill_rows
+    }
   }
 
   return(dtf_out)
