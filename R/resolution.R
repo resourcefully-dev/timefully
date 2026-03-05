@@ -14,7 +14,16 @@
 #' get_time_resolution(seq_15m, units = "mins")
 #'
 get_time_resolution <- function(dttm_seq, units = 'mins') {
-  as.numeric(dttm_seq[2] - dttm_seq[1], units)
+  if (length(dttm_seq) < 2) {
+    stop("Error: need at least two datetime values to infer resolution.")
+  }
+
+  idx <- which(!is.na(dttm_seq))
+  if (length(idx) < 2) {
+    stop("Error: need at least two non-missing datetime values to infer resolution.")
+  }
+
+  as.numeric(dttm_seq[idx[2]] - dttm_seq[idx[1]], units)
 }
 
 #' Return the time resolution of a time series dataframe

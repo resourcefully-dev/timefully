@@ -48,30 +48,30 @@ fill_na <- function(dtf, varnames, with = 0) {
 #' fill_from_past(past_data, "consumption", back = 1)
 #'
 fill_from_past <- function(dtf, varnames, back = 24) {
+  if (length(back) != 1 || is.na(back) || !is.finite(back)) {
+    stop("Error: `back` must be a single positive number.")
+  }
+  back <- as.integer(back)
+  if (back < 1) {
+    stop("Error: `back` must be at least 1.")
+  }
+
   tbl_to_fill <- dtf[varnames]
   for (col in varnames) {
-    na_idx <- which(is.na(tbl_to_fill[col]))
+    col_values <- tbl_to_fill[[col]]
+    na_idx <- which(is.na(col_values))
     for (idx in na_idx) {
       back_idx <- idx
-      # if (back_idx <= 0) back_idx <- 1
-      while (is.na(tbl_to_fill[back_idx, col])) {
+      while (is.na(col_values[back_idx])) {
         back_idx <- back_idx - back
-        if (back_idx <= 0) {
+        if (is.na(back_idx) || !is.finite(back_idx) || back_idx <= 0) {
           back_idx <- 1
           break
         }
       }
-      new_value <- tbl_to_fill[back_idx, col]
-      if (is.na(new_value)) {
-        message(paste(
-          "Could not find numeric values in the past for column",
-          col,
-          "and index",
-          idx
-        ))
-      }
-      tbl_to_fill[idx, col] <- tbl_to_fill[back_idx, col]
+      col_values[idx] <- col_values[back_idx]
     }
+    tbl_to_fill[[col]] <- col_values
   }
   dtf[varnames] <- tbl_to_fill
   return(dtf)

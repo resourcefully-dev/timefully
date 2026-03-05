@@ -280,6 +280,7 @@ adapt_timeseries <- function(
           back = 7 * 24 * 60 / dtf_resolution
         )
     } else {
+      # Extra check for the user to avoid NA values
       stop(
         "Error: there are NA values in `dtf`. Fix it or use `fill_gaps = TRUE`."
       )
