@@ -72,13 +72,15 @@ reproducible example on
   : Fill from past values
 - [`fill_down_until()`](https://resourcefully-dev.github.io/timefully/reference/fill_down_until.md)
   : Fill down tibble columns until a maximum number of time slots
-- [`fill_datetime()`](https://resourcefully-dev.github.io/timefully/reference/fill_datetime.md)
+- [`complete_timeseries_datetime()`](https://resourcefully-dev.github.io/timefully/reference/complete_timeseries_datetime.md)
   : Fill NA values of a datetime sequence vector
 
 ## Visualisation
 
 - [`plot_ts()`](https://resourcefully-dev.github.io/timefully/reference/plot_ts.md)
   : Interactive plot for time-series tibbles
+- [`format_datetime_axis()`](https://resourcefully-dev.github.io/timefully/reference/format_datetime_axis.md)
+  : Format datetime axis
 
 ## Time conversions
 

@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   adapt-timeseries-gaps: adapt-timeseries-gaps.html
   timefully: timefully.html
-last_built: 2025-12-19T09:56Z
+last_built: 2026-03-05T11:13Z
 urls:
   reference: https://resourcefully-dev.github.io/timefully/reference
   article: https://resourcefully-dev.github.io/timefully/articles
