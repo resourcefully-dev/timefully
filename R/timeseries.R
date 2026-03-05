@@ -89,7 +89,6 @@ aggregate_timeseries <- function(dtf, varname, omit = NULL) {
 }
 
 
-
 #' Add an extra day at the beginning and the end of datetime sequence
 #' using the last and first day of the data
 #'
@@ -112,7 +111,9 @@ add_extra_days <- function(dtf) {
   last_day$datetime <- last_day$datetime + days(1)
 
   bind_rows(
-    first_day, dtf, last_day
+    first_day,
+    dtf,
+    last_day
   ) %>%
     arrange(.data$datetime)
 }
@@ -162,6 +163,7 @@ get_timeseries_tzone <- function(dtf) {
 #' range(new_dtf$datetime)
 #'
 change_timeseries_tzone <- function(dtf, tzone = "Europe/Amsterdam") {
+  dtf <- complete_timeseries_datetime(dtf)
   dtf_start_date <- date(min(dtf$datetime))
   dtf_end_date <- date(max(dtf$datetime))
   dtf_resolution <- get_timeseries_resolution(dtf, units = "mins")
@@ -199,19 +201,21 @@ change_timeseries_tzone <- function(dtf, tzone = "Europe/Amsterdam") {
   if (any(dtf_out_idx_missing_data)) {
     # Find the data values that have not been inserted in the output
     #  Insert these values back in the output dataframe
-    dtf_out[dtf_out_idx_missing_data, -1] <- dtf_tz_out[dtf_tz_out_idx_shift_data, -1]
+    dtf_out[dtf_out_idx_missing_data, -1] <- dtf_tz_out[
+      dtf_tz_out_idx_shift_data,
+      -1
+    ]
   }
 
   return(dtf_out)
 }
 
 
-
 #' Adapt time-series dataframe to timezone, date range and fill gaps
-#' 
-#' This function adapts the date range of a time series by reusing historical 
-#' patterns based on the same weekday occurrence within the year and decimal 
-#' hour of the day. It also can fill gaps in the data based on past data, 
+#'
+#' This function adapts the date range of a time series by reusing historical
+#' patterns based on the same weekday occurrence within the year and decimal
+#' hour of the day. It also can fill gaps in the data based on past data,
 #' so it is recommended to use it for time series with weekly or yearly patterns
 #' (so for example energy demand but not solar generation).
 #' It can also adapt the timezone of the time series, for example if the data
@@ -252,8 +256,13 @@ change_timeseries_tzone <- function(dtf, tzone = "Europe/Amsterdam") {
 #' # New date range
 #' range(dtf2$datetime)
 #'
-adapt_timeseries <- function(dtf, start_date, end_date, tzone = NULL, fill_gaps = FALSE) {
-  
+adapt_timeseries <- function(
+  dtf,
+  start_date,
+  end_date,
+  tzone = NULL,
+  fill_gaps = FALSE
+) {
   # 1. Fill missing data
   # If we have some gaps in the data, try to fill them first
   # based on same weekday and same hour
@@ -266,14 +275,17 @@ adapt_timeseries <- function(dtf, start_date, end_date, tzone = NULL, fill_gaps 
           back = 7 * 24 * 60 / dtf_resolution
         )
     } else {
-      stop("Error: there are NA values in `dtf`. Fix it or use `fill_gaps = TRUE`.")
+      stop(
+        "Error: there are NA values in `dtf`. Fix it or use `fill_gaps = TRUE`."
+      )
     }
   }
-  
+
   # 2. Change timezone to UTC
   # This way, when changing date range we avoid issues with daylight saving time
   dtf_utc <- change_timeseries_tzone(
-    dtf, tzone = "UTC"
+    dtf,
+    tzone = "UTC"
   )
 
   # 3. Change date range
@@ -319,7 +331,7 @@ adapt_timeseries <- function(dtf, start_date, end_date, tzone = NULL, fill_gaps 
         ~ ifelse(is.na(.x), get(paste0(cur_column(), "0")), .x)
       )) |>
       select(names(dtf))
-    
+
     # If we still have missing data (e.g., 31st Dec),
     # we cannot fill it based on ywday and dhours
     # so we fill it from past data directly
@@ -374,8 +386,7 @@ adapt_timeseries <- function(dtf, start_date, end_date, tzone = NULL, fill_gaps 
 ywday <- function(datetime) {
   # `week` returns the number of full weeks + 1
   # (counting from day 1, not first Monday)
-  lubridate::wday(datetime, week_start = 1) * 100 +
-    lubridate::week(datetime)
+  lubridate::wday(datetime, week_start = 1) * 100 + lubridate::week(datetime)
 }
 
 #' Decimal hours from datetime
@@ -398,24 +409,24 @@ dhours <- function(datetime) {
 }
 
 #' Check if there are any gaps in the datetime sequence
-#' 
+#'
 #' This means all rows a part from "datetime" will be NA.
-#' Note that timefully considers a full datetime sequence 
+#' Note that timefully considers a full datetime sequence
 #' when days are complete.
-#' 
+#'
 #' @param dtf data.frame or tibble, first column of name `datetime` being
 #' of class datetime and rest of columns being numeric
-#' 
+#'
 #' @importFrom dplyr tibble left_join
-#' 
-#' 
+#'
+#'
 #' @return tibble
-#' @export 
-#' 
+#' @export
+#'
 #' @examples
 #' # Sample just some hours
 #' dtf_gaps <- dtf[c(1:3, 7:10), ]
-#' 
+#'
 #' # Note that the full day is provided
 #' check_timeseries_gaps(
 #'    dtf_gaps
@@ -427,7 +438,8 @@ check_timeseries_gaps <- function(dtf) {
     datetime = get_datetime_seq(
       start_date = date(min(dtf$datetime)),
       end_date = date(max(dtf$datetime)),
-      tzone = tzone, resolution = resolution
+      tzone = tzone,
+      resolution = resolution
     )
   ) |>
     left_join(dtf, by = "datetime")
@@ -435,5 +447,5 @@ check_timeseries_gaps <- function(dtf) {
   if (nrow(dtf_full) > nrow(dtf)) {
     warning("There are gaps in the data.")
   }
-  return( dtf_full )
+  return(dtf_full)
 }

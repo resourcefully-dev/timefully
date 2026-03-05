@@ -24,15 +24,13 @@ test_that("fill_down_until limits fills to max timeslots", {
   expect_true(is.na(filled$temperature[5]))
 })
 
-test_that("fill_datetime reconstructs missing timestamps", {
-  seq_input <- as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:4 * 3600
-  seq_input[c(3, 4)] <- NA
-
-  filled <- fill_datetime(seq_input)
+test_that("complete_timeseries_datetime reconstructs missing timestamps", {
+  dtf_gaps <- timefully::dtf[c(1, 2, 3, 8, 9, 10), ]
+  filled <- complete_timeseries_datetime(dtf_gaps)
 
   expect_equal(
-    filled,
-    as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:4 * 3600
+    nrow(filled),
+    10
   )
 })
 

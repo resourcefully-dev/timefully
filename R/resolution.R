@@ -1,4 +1,3 @@
-
 #' Return the time resolution of a datetime sequence
 #'
 #' @param dttm_seq datetime sequence
@@ -20,7 +19,7 @@ get_time_resolution <- function(dttm_seq, units = 'mins') {
 
 #' Return the time resolution of a time series dataframe
 #'
-#' @param dtf data.frame or tibble, first column of name `datetime` being 
+#' @param dtf data.frame or tibble, first column of name `datetime` being
 #' of class datetime and rest of columns being numeric
 #' @param units character being one of "auto", "secs", "mins", "hours", "days" and "weeks"
 #'
@@ -32,13 +31,13 @@ get_time_resolution <- function(dttm_seq, units = 'mins') {
 #'
 get_timeseries_resolution <- function(dtf, units = 'mins') {
   dttm_seq <- dtf$datetime
-  return( get_time_resolution(dttm_seq, units) )
+  return(get_time_resolution(dttm_seq, units))
 }
 
 
 #' Change time resolution of a time-series data frame
 #'
-#' @param dtf data.frame or tibble, first column of name `datetime` being 
+#' @param dtf data.frame or tibble, first column of name `datetime` being
 #' of class datetime and rest of columns being numeric
 #' @param resolution integer, desired interval of minutes between two consecutive datetime values
 #' @param method character, being `interpolate`, `repeat` or `divide` if the resolution has to be increased,
@@ -73,14 +72,13 @@ change_timeseries_resolution <- function(dtf, resolution, method) {
       stop("Error: method not valid for decreasing resolution")
     }
   } else {
-    if (method %in%  c("interpolate", "repeat", "divide")) {
+    if (method %in% c("interpolate", "repeat", "divide")) {
       return(increase_timeseries_resolution(dtf, resolution, method))
     } else {
       stop("Error: method not valid for increasing resolution")
     }
   }
 }
-
 
 
 #' Interpolate `n` values between two numeric values
@@ -97,15 +95,15 @@ change_timeseries_resolution <- function(dtf, resolution, method) {
 #'
 interpolation <- function(y1, y2, n) {
   if (is.na(y1) | is.na(y2)) {
-    return( rep(y1, n) )
+    return(rep(y1, n))
   }
   as.numeric(
     predict(
       lm(
         y ~ x,
-        tibble(x = c(1, (n+1)), y = c(y1, y2))
+        tibble(x = c(1, (n + 1)), y = c(y1, y2))
       ),
-      tibble(x=c(1:n))
+      tibble(x = c(1:n))
     )
   )
 }
@@ -136,7 +134,11 @@ interpolation <- function(y1, y2, n) {
 #'
 #' returns c(1, 1, 1, 1, 2)
 #'
-increase_numeric_resolution <- function(y, n, method = c('interpolate', 'repeat', 'divide')) {
+increase_numeric_resolution <- function(
+  y,
+  n,
+  method = c('interpolate', 'repeat', 'divide')
+) {
   if (method == 'interpolate') {
     tibble(y1 = y, y2 = lead(y, default = 0)) |>
       pmap(~ interpolation(..1, ..2, n)) |>
@@ -145,7 +147,7 @@ increase_numeric_resolution <- function(y, n, method = c('interpolate', 'repeat'
   } else if (method == 'repeat') {
     rep(y, each = n)
   } else if (method == 'divide') {
-    rep(y/n, each = n)
+    rep(y / n, each = n)
   } else {
     stop("Error: method not valid")
   }
@@ -162,12 +164,17 @@ increase_numeric_resolution <- function(y, n, method = c('interpolate', 'repeat'
 #' @importFrom lubridate minutes as_datetime tz
 #'
 increase_datetime_resolution <- function(y, resolution) {
-  seq.POSIXt(y[1], y[length(y)]+(y[2]-y[1])-minutes(resolution), by = paste(resolution, 'min')) |> as_datetime(tz = tz(y))
+  seq.POSIXt(
+    y[1],
+    y[length(y)] + (y[2] - y[1]) - minutes(resolution),
+    by = paste(resolution, 'min')
+  ) |>
+    as_datetime(tz = tz(y))
 }
 
 #' Increase time resolution of a timeseries data frame
 #'
-#' @param dtf data.frame or tibble, first column of name `datetime` being 
+#' @param dtf data.frame or tibble, first column of name `datetime` being
 #' of class datetime and rest of columns being numeric
 #' @param resolution integer, interval of minutes between two consecutive datetime values
 #' @param method character, being `interpolate`, `repeat` or `divide` as valid options.
@@ -178,20 +185,30 @@ increase_datetime_resolution <- function(y, resolution) {
 #'
 #' @importFrom dplyr tibble select_if
 #'
-increase_timeseries_resolution <- function(dtf, resolution, method = c('interpolate', 'repeat', 'divide')) {
-  new_df <- tibble(datetime = increase_datetime_resolution(dtf$datetime, resolution))
+increase_timeseries_resolution <- function(
+  dtf,
+  resolution,
+  method = c('interpolate', 'repeat', 'divide')
+) {
+  new_df <- tibble(
+    datetime = increase_datetime_resolution(dtf$datetime, resolution)
+  )
   current_resolution <- get_timeseries_resolution(dtf, units = "mins")
   numeric_df <- dtf |> select_if(is.numeric)
   for (col in colnames(numeric_df)) {
-    new_df[[col]] <- increase_numeric_resolution(numeric_df[[col]], n = current_resolution/resolution, method)
+    new_df[[col]] <- increase_numeric_resolution(
+      numeric_df[[col]],
+      n = current_resolution / resolution,
+      method
+    )
   }
-  return( new_df )
+  return(new_df)
 }
 
 
 #' Decrease time resolution of timeseries data frame
 #'
-#' @param dtf data.frame or tibble, first column of name `datetime` being 
+#' @param dtf data.frame or tibble, first column of name `datetime` being
 #' of class datetime and rest of columns being numeric
 #' @param resolution integer, interval of minutes between two consecutive datetime values
 #' @param method character, being `average`, `first` or `sum` as valid options
@@ -203,7 +220,11 @@ increase_timeseries_resolution <- function(dtf, resolution, method = c('interpol
 #' @importFrom lubridate floor_date
 #' @importFrom rlang .data
 #'
-decrease_timeseries_resolution <- function(dtf, resolution, method = c('average', 'first', 'sum')) {
+decrease_timeseries_resolution <- function(
+  dtf,
+  resolution,
+  method = c('average', 'first', 'sum')
+) {
   dtf2 <- dtf |>
     mutate(datetime = floor_date(.data$datetime, paste(resolution, 'minute')))
   if (method == 'average') {

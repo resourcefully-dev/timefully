@@ -1,12 +1,11 @@
-
 #' Fill gaps with a specific value
-#' 
+#'
 #' This is useful when the gaps in a numeric timeseries can be
 #' filled with the same number (e.g. zero)
-#' 
-#' @param dtf data.frame or tibble, first column of name `datetime` being 
+#'
+#' @param dtf data.frame or tibble, first column of name `datetime` being
 #' of class datetime and rest of columns being numeric
-#' @param varnames character or vector of characters, 
+#' @param varnames character or vector of characters,
 #' column names with NA values
 #' @param with numeric, value to fill NA values
 #'
@@ -24,7 +23,7 @@ fill_na <- function(dtf, varnames, with = 0) {
   for (col in varnames) {
     dtf[is.na(dtf[[col]]), col] <- with
   }
-  return( dtf )
+  return(dtf)
 }
 
 #' Fill from past values
@@ -32,9 +31,9 @@ fill_na <- function(dtf, varnames, with = 0) {
 #' If back index ( NA index - `back`) is lower than zero then the it is filled with the first value of the data frame.
 #' If the value in the back index is also NA, it iterates backwards until finding a non-NA value.
 #'
-#' @param dtf data.frame or tibble, first column of name `datetime` being 
+#' @param dtf data.frame or tibble, first column of name `datetime` being
 #' of class datetime and rest of columns being numeric
-#' @param varnames character or vector of characters, 
+#' @param varnames character or vector of characters,
 #' column names with NA values
 #' @param back integer, number of indices (rows) to go back and get the filling value
 #'
@@ -48,7 +47,7 @@ fill_na <- function(dtf, varnames, with = 0) {
 #' )
 #' fill_from_past(past_data, "consumption", back = 1)
 #'
-fill_from_past <- function(dtf, varnames, back=24) {
+fill_from_past <- function(dtf, varnames, back = 24) {
   tbl_to_fill <- dtf[varnames]
   for (col in varnames) {
     na_idx <- which(is.na(tbl_to_fill[col]))
@@ -65,23 +64,25 @@ fill_from_past <- function(dtf, varnames, back=24) {
       new_value <- tbl_to_fill[back_idx, col]
       if (is.na(new_value)) {
         message(paste(
-            "Could not find numeric values in the past for column", 
-            col, "and index", idx
+          "Could not find numeric values in the past for column",
+          col,
+          "and index",
+          idx
         ))
       }
       tbl_to_fill[idx, col] <- tbl_to_fill[back_idx, col]
     }
   }
   dtf[varnames] <- tbl_to_fill
-  return( dtf )
+  return(dtf)
 }
 
 
 #' Fill down tibble columns until a maximum number of time slots
 #'
-#' @param dtf data.frame or tibble, first column of name `datetime` being 
+#' @param dtf data.frame or tibble, first column of name `datetime` being
 #' of class datetime and rest of columns being numeric
-#' @param varnames character or vector of characters, 
+#' @param varnames character or vector of characters,
 #' column names with NA values
 #' @param max_timeslots integer, maximum number of time slots to fill
 #'
@@ -98,66 +99,73 @@ fill_from_past <- function(dtf, varnames, back=24) {
 #' fill_down_until(down_data, "temperature", max_timeslots = 2)
 #'
 fill_down_until <- function(dtf, varnames, max_timeslots = 1) {
-
   for (var_name in varnames) {
     var_values <- dtf[[var_name]]
     na_idxs <- which(is.na(var_values) & !is.na(dplyr::lag(var_values)))
     na_idxs <- na_idxs[na_idxs != 1]
     var_values_filled <- var_values
     for (na_idx in na_idxs) {
-      for (i in na_idx:(na_idx+max_timeslots-1)) {
-        if (!is.na(var_values_filled[i]) | length(var_values_filled) < i)
+      for (i in na_idx:(na_idx + max_timeslots - 1)) {
+        if (!is.na(var_values_filled[i]) | length(var_values_filled) < i) {
           break
-        var_values_filled[i] <- var_values_filled[na_idx-1]
+        }
+        var_values_filled[i] <- var_values_filled[na_idx - 1]
       }
     }
     dtf[[var_name]] <- var_values_filled
   }
 
-  return( dtf )
+  return(dtf)
 }
-
 
 
 #' Fill NA values of a datetime sequence vector
 #'
-#' @param dttm datetime sequence vector
+#' @param dtf data.frame or tibble, first column of name `datetime` being
+#' of class datetime and rest of columns being numeric
 #'
-#' @return filled datetime sequence vector
+#' @importFrom lubridate date
+#' @importFrom dplyr tibble left_join
+#'
+#' @return tibble
 #' @export
 #'
-#' @importFrom lubridate minutes
-#'
 #' @examples
-#' incomplete_seq <- as.POSIXct("2024-01-01 00:00:00", tz = "UTC") + 0:4 * 3600
-#' incomplete_seq[c(2, 3)] <- NA
-#' fill_datetime(incomplete_seq)
+#' dtf_gaps <- timefully::dtf[c(1, 2, 3, 8, 9, 10), ]
+#' print(dtf_gaps)
+#' complete_timeseries_datetime(dtf_gaps)
 #'
-fill_datetime <- function(dttm) {
-  # detect the time interval of the sequence
-  dttm_diff <- as.numeric(dttm - lag(dttm), units = 'mins')
-  time_interval_minutes <- as.integer(dttm_diff[which(!is.na(dttm_diff))[1]])
+complete_timeseries_datetime <- function(dtf) {
+  dtf_start_dttm <- min(dtf$datetime)
+  dtf_end_dttm <- max(dtf$datetime)
+  dtf_resolution <- get_timeseries_resolution(dtf, units = "mins")
+  dtf_tz <- get_timeseries_tzone(dtf)
 
-  # find missing values
-  dttm_na_i <- which(is.na(dttm))
+  #  Get the desired date time sequence
+  datetime_seq_out <- get_datetime_seq(
+    start_date = date(dtf_start_dttm),
+    end_date = date(dtf_end_dttm),
+    tzone = dtf_tz,
+    resolution = dtf_resolution
+  )
+  # datetime_seq_out <- datetime_seq_out[
+  #   datetime_seq_out >= dtf_start_dttm &
+  #     datetime_seq_out <= dtf_end_dttm
+  # ] # --> We consider full days in all timefully environment
 
-  # fill missing values
-  while (sum(is.na(dttm)) > 0) {
-    for (i in dttm_na_i) {
-      last_i <- i - 1
-      next_i <- i + 1
+  # Join the original data with the sequence
+  dtf_out <- tibble(
+    datetime = datetime_seq_out
+  ) |>
+    left_join(dtf, by = "datetime")
 
-      if ((last_i %in% dttm_na_i) | (last_i < 1)) {
-        if ((next_i %in% dttm_na_i) | (next_i > length(dttm))) {
-          next
-        } else {
-          dttm[i] <- dttm[next_i] - minutes(time_interval_minutes)
-        }
-      } else {
-        dttm[i] <- dttm[last_i] + minutes(time_interval_minutes)
-      }
-    }
+  if (nrow(dtf_out) > nrow(dtf)) {
+    message(paste(
+      "Added",
+      nrow(dtf_out) - nrow(dtf),
+      "rows to the data frame to fill in missing timestamps."
+    ))
   }
 
-  return(dttm)
+  return(dtf_out)
 }

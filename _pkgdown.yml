@@ -31,10 +31,11 @@ reference:
     - fill_na
     - fill_from_past
     - fill_down_until
-    - fill_datetime
+    - complete_timeseries_datetime
   - title: Visualisation
   - contents:
     - plot_ts
+    - format_datetime_axis
   - title: Time conversions
   - contents:
     - convert_time_num_to_period
