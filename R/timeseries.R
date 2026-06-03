@@ -347,17 +347,16 @@ adapt_timeseries <- function(
         dtf_utc_out$datetime[na_rows]
       ))
 
-      # If more than 2 days are missing, it's not due the
+      # If more than 2 days are missing, it's not due to the
       # yearweekday/daytime method, so we can't fill them properly
       if (length(dtf_utc_out_missing_dates) > 2) {
         warning("More than 2 days of data are missing. Use more data as input.")
-      } else {
-        dtf_utc_out <- dtf_utc_out |>
-          fill_from_past(
-            names(dtf[-1]),
-            back = 7 * 24 * 60 / dtf_resolution
-          )
       }
+      dtf_utc_out <- dtf_utc_out |>
+        fill_from_past(
+          names(dtf[-1]),
+          back = 7 * 24 * 60 / dtf_resolution
+        )
     }
   }
 
