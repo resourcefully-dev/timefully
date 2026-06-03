@@ -268,6 +268,9 @@ adapt_timeseries <- function(
   tzone = NULL,
   fill_gaps = FALSE
 ) {
+  # 0. Complete the datetime sequence
+  dtf <- pad_timeseries(dtf, verbose = FALSE)
+
   # 1. Fill missing data
   # If we have some gaps in the data, try to fill them first
   # based on same weekday and same hour
@@ -351,12 +354,13 @@ adapt_timeseries <- function(
       # yearweekday/daytime method, so we can't fill them properly
       if (length(dtf_utc_out_missing_dates) > 2) {
         warning("More than 2 days of data are missing. Use more data as input.")
+      } else {
+        dtf_utc_out <- dtf_utc_out |>
+          fill_from_past(
+            names(dtf[-1]),
+            back = 7 * 24 * 60 / dtf_resolution
+          )
       }
-      dtf_utc_out <- dtf_utc_out |>
-        fill_from_past(
-          names(dtf[-1]),
-          back = 7 * 24 * 60 / dtf_resolution
-        )
     }
   }
 

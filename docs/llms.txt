@@ -61,8 +61,12 @@ reproducible example on
 - [`add_extra_days()`](https://resourcefully-dev.github.io/timefully/reference/add_extra_days.md)
   : Add an extra day at the beginning and the end of datetime sequence
   using the last and first day of the data
-- [`check_timeseries_gaps()`](https://resourcefully-dev.github.io/timefully/reference/check_timeseries_gaps.md)
-  : Check if there are any gaps in the datetime sequence
+- [`pad_timeseries()`](https://resourcefully-dev.github.io/timefully/reference/pad_timeseries.md)
+  : Pad a time series to a complete datetime sequence
+- [`has_timeseries_gaps()`](https://resourcefully-dev.github.io/timefully/reference/has_timeseries_gaps.md)
+  : Check whether a time series dataframe has gaps
+- [`time_gaps()`](https://resourcefully-dev.github.io/timefully/reference/time_gaps.md)
+  : Find the missing time slots in a datetime sequence
 
 ## Gap filling
 
@@ -72,8 +76,6 @@ reproducible example on
   : Fill from past values
 - [`fill_down_until()`](https://resourcefully-dev.github.io/timefully/reference/fill_down_until.md)
   : Fill down tibble columns until a maximum number of time slots
-- [`complete_timeseries_datetime()`](https://resourcefully-dev.github.io/timefully/reference/complete_timeseries_datetime.md)
-  : Fill NA values of a datetime sequence vector
 
 ## Visualisation
 

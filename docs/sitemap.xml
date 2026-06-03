@@ -34,13 +34,16 @@
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/get_week_from_datetime.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/get_week_total.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/get_yearly_datetime_seq.html</loc></url>
+<url><loc>https://resourcefully-dev.github.io/timefully/reference/has_timeseries_gaps.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/increase_datetime_resolution.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/increase_numeric_resolution.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/increase_timeseries_resolution.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/index.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/interpolation.html</loc></url>
+<url><loc>https://resourcefully-dev.github.io/timefully/reference/pad_timeseries.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/plot_ts.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/tic.html</loc></url>
+<url><loc>https://resourcefully-dev.github.io/timefully/reference/time_gaps.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/to_hhmm.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/toc.html</loc></url>
 <url><loc>https://resourcefully-dev.github.io/timefully/reference/ywday.html</loc></url>
