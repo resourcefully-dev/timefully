@@ -100,6 +100,33 @@ test_that("adapt_timeseries adjusts timezone and fills gaps", {
 })
 
 
+test_that("adapt_timeseries fills gaps that are absent rows, not just NA values", {
+  full <- timefully::dtf
+
+  # Drop entire rows (absent timestamps) on a day well into the series so that
+  # fill_from_past (one week back) has data to draw from.
+  gap_day <- lubridate::date(min(full$datetime)) + 50
+  drop_idx <- which(lubridate::date(full$datetime) == gap_day)[20:60]
+  dtf_missing_rows <- full[-drop_idx, ]
+
+  # Precondition for the regression: the gap is *absent rows*, not NA values,
+  # so the anyNA() gate in adapt_timeseries would miss it without step 0.
+  expect_false(anyNA(dtf_missing_rows[-1]))
+  expect_true(has_timeseries_gaps(dtf_missing_rows))
+
+  adapted <- adapt_timeseries(
+    dtf_missing_rows,
+    start_date = lubridate::date(min(full$datetime)),
+    end_date   = lubridate::date(max(full$datetime)),
+    fill_gaps  = TRUE
+  )
+
+  # The dropped slots are reconstructed and filled from past data.
+  gap_rows <- adapted[lubridate::date(adapted$datetime) == gap_day, -1, drop = FALSE]
+  expect_false(anyNA(gap_rows))
+})
+
+
 test_that("adapt_timeseries adjusts date range with gaps", {
   dtf_example <- timefully::dtf |> dplyr::filter(
       lubridate::month(datetime) == 4

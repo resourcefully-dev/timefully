@@ -3,6 +3,7 @@
 #' @param dttm_seq datetime sequence
 #' @param units character being one of "auto", "secs", "mins", "hours", "days" and "weeks"
 #'
+#' @importFrom stats median
 #' @return numeric
 #' @export
 #'

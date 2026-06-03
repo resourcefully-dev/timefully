@@ -268,7 +268,9 @@ adapt_timeseries <- function(
   tzone = NULL,
   fill_gaps = FALSE
 ) {
-  # 0. Complete the datetime sequence
+  # 0. Complete the datetime sequence so that gaps present as *absent rows*
+  #    become NA rows. Otherwise the anyNA() check below would miss them
+  #    and fill_from_past() would never run.
   dtf <- pad_timeseries(dtf, verbose = FALSE)
 
   # 1. Fill missing data
