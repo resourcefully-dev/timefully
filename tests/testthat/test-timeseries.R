@@ -151,3 +151,20 @@ test_that("check gaps is working", {
     check_timeseries_gaps(dtf_gaps)
   )
 })
+
+test_that("time_gaps returns the missing slots", {
+  seq_15m <- get_datetime_seq(
+    as.Date("2024-01-01"), as.Date("2024-01-01"), "UTC", 15
+  )
+
+  # No gaps in a complete sequence
+  expect_length(time_gaps(seq_15m), 0)
+
+  # Dropping two slots returns exactly those slots
+  expect_equal(time_gaps(seq_15m[-c(5, 6)]), seq_15m[c(5, 6)])
+})
+
+test_that("has_timeseries_gaps returns TRUE/FALSE", {
+  expect_false(has_timeseries_gaps(dtf))
+  expect_true(has_timeseries_gaps(dtf[c(1:3, 7:10), ]))
+})

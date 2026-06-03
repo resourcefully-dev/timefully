@@ -413,6 +413,65 @@ dhours <- function(datetime) {
     lubridate::minute(datetime) / 60
 }
 
+#' Find the missing time slots in a datetime sequence
+#'
+#' Builds the complete datetime sequence that would span the same date range
+#' (full days) at the same resolution as `dttm_seq` and returns the datetime
+#' values that are missing from it. Note that timefully considers a full
+#' datetime sequence when days are complete.
+#'
+#' @param dttm_seq datetime sequence
+#'
+#' @return vector of datetime values missing from `dttm_seq`
+#' @export
+#'
+#' @importFrom lubridate date tz
+#'
+#' @examples
+#' seq_15m <- get_datetime_seq(
+#'   start_date = as.Date("2024-01-01"),
+#'   end_date = as.Date("2024-01-01"),
+#'   tzone = "UTC",
+#'   resolution = 15
+#' )
+#'
+#' # Drop a couple of slots to create gaps
+#' time_gaps(seq_15m[-c(5, 6)])
+#'
+time_gaps <- function(dttm_seq) {
+  resolution <- get_time_resolution(dttm_seq)
+  full_seq <- get_datetime_seq(
+    start_date = date(min(dttm_seq)),
+    end_date = date(max(dttm_seq)),
+    tzone = tz(dttm_seq[1]),
+    resolution = resolution
+  )
+  full_seq[!full_seq %in% dttm_seq]
+}
+
+
+#' Check whether a time series dataframe has gaps
+#'
+#' Note that timefully considers a full datetime sequence when days are
+#' complete.
+#'
+#' @param dtf data.frame or tibble, first column of name `datetime` being
+#' of class datetime and rest of columns being numeric
+#'
+#' @return logical, `TRUE` when there are missing time slots
+#' @export
+#'
+#' @examples
+#' has_timeseries_gaps(dtf)
+#'
+#' dtf_gaps <- dtf[c(1:3, 7:10), ]
+#' has_timeseries_gaps(dtf_gaps)
+#'
+has_timeseries_gaps <- function(dtf) {
+  length(time_gaps(dtf$datetime)) > 0
+}
+
+
 #' Check if there are any gaps in the datetime sequence
 #'
 #' This means all rows a part from "datetime" will be NA.
@@ -423,6 +482,7 @@ dhours <- function(datetime) {
 #' of class datetime and rest of columns being numeric
 #'
 #' @importFrom dplyr tibble left_join
+#' @importFrom lubridate date
 #'
 #'
 #' @return tibble
@@ -449,8 +509,18 @@ check_timeseries_gaps <- function(dtf) {
   ) |>
     left_join(dtf, by = "datetime")
 
-  if (nrow(dtf_full) > nrow(dtf)) {
-    warning("There are gaps in the data.")
+  gap_datetimes <- time_gaps(dtf$datetime)
+
+  if (length(gap_datetimes) > 0) {
+    gap_dates <- sort(unique(date(gap_datetimes)))
+    cli::cli_warn(c(
+      "!" = "Found {length(gap_datetimes)} gap{?s} in the time series \\
+             across {length(gap_dates)} date{?s}.",
+      "i" = "Date{?s} with gaps: {.val {format(gap_dates)}}"
+    ))
+  } else {
+    cli::cli_alert_success("No gaps in the time series.")
   }
+
   return(dtf_full)
 }
