@@ -25,13 +25,14 @@ reference:
     - change_timeseries_tzone
     - aggregate_timeseries
     - add_extra_days
-    - check_timeseries_gaps
+    - pad_timeseries
+    - has_timeseries_gaps
+    - time_gaps
   - title: Gap filling
   - contents:
     - fill_na
     - fill_from_past
     - fill_down_until
-    - complete_timeseries_datetime
   - title: Visualisation
   - contents:
     - plot_ts

@@ -145,10 +145,19 @@ test_that("test add_extra_days works", {
   )
 })
 
-test_that("check gaps is working", {
-  dtf_gaps <- dtf[c(1:100, 120:200), ]
-  expect_warning(
-    check_timeseries_gaps(dtf_gaps)
+test_that("pad_timeseries pads gaps to a full sequence and reports them", {
+  dtf_gaps <- dtf[c(1, 2, 3, 8, 9, 10), ]
+
+  expect_message(
+    padded <- pad_timeseries(dtf_gaps)
+  )
+  # Padded to a full day-aligned sequence (15-min resolution -> 96 slots)
+  expect_equal(nrow(padded), 96)
+  expect_false(has_timeseries_gaps(padded))
+
+  # verbose = FALSE stays silent
+  expect_no_message(
+    pad_timeseries(dtf_gaps, verbose = FALSE)
   )
 })
 

@@ -163,7 +163,7 @@ get_timeseries_tzone <- function(dtf) {
 #' range(new_dtf$datetime)
 #'
 change_timeseries_tzone <- function(dtf, tzone = "Europe/Amsterdam") {
-  dtf <- complete_timeseries_datetime(dtf)
+  dtf <- pad_timeseries(dtf, verbose = FALSE)
   dtf_start_date <- date(min(dtf$datetime))
   dtf_end_date <- date(max(dtf$datetime))
   dtf_resolution <- get_timeseries_resolution(dtf, units = "mins")
@@ -472,14 +472,17 @@ has_timeseries_gaps <- function(dtf) {
 }
 
 
-#' Check if there are any gaps in the datetime sequence
+#' Pad a time series to a complete datetime sequence
 #'
-#' This means all rows a part from "datetime" will be NA.
-#' Note that timefully considers a full datetime sequence
-#' when days are complete.
+#' Expands `dtf` onto the complete datetime sequence that spans the same date
+#' range at the same resolution, inserting the missing time slots as rows with
+#' `NA` values. Note that timefully considers a full datetime sequence when
+#' days are complete.
 #'
 #' @param dtf data.frame or tibble, first column of name `datetime` being
 #' of class datetime and rest of columns being numeric
+#' @param verbose logical, when `TRUE` (default) report the number of rows
+#' added and the dates with gaps
 #'
 #' @importFrom dplyr tibble left_join
 #' @importFrom lubridate date
@@ -493,10 +496,10 @@ has_timeseries_gaps <- function(dtf) {
 #' dtf_gaps <- dtf[c(1:3, 7:10), ]
 #'
 #' # Note that the full day is provided
-#' check_timeseries_gaps(
+#' pad_timeseries(
 #'    dtf_gaps
 #' )
-check_timeseries_gaps <- function(dtf) {
+pad_timeseries <- function(dtf, verbose = TRUE) {
   resolution <- get_timeseries_resolution(dtf)
   tzone <- get_timeseries_tzone(dtf)
   dtf_full <- tibble(
@@ -509,17 +512,17 @@ check_timeseries_gaps <- function(dtf) {
   ) |>
     left_join(dtf, by = "datetime")
 
-  gap_datetimes <- time_gaps(dtf$datetime)
-
-  if (length(gap_datetimes) > 0) {
-    gap_dates <- sort(unique(date(gap_datetimes)))
-    cli::cli_warn(c(
-      "!" = "Found {length(gap_datetimes)} gap{?s} in the time series \\
-             across {length(gap_dates)} date{?s}.",
-      "i" = "Date{?s} with gaps: {.val {format(gap_dates)}}"
-    ))
-  } else {
-    cli::cli_alert_success("No gaps in the time series.")
+  if (verbose) {
+    gap_datetimes <- time_gaps(dtf$datetime)
+    if (length(gap_datetimes) > 0) {
+      gap_dates <- sort(unique(date(gap_datetimes)))
+      cli::cli_alert_info(
+        "Padded {length(gap_datetimes)} missing slot{?s} \\
+         across {length(gap_dates)} date{?s}: {.val {format(gap_dates)}}"
+      )
+    } else {
+      cli::cli_alert_success("No gaps in the time series.")
+    }
   }
 
   return(dtf_full)
