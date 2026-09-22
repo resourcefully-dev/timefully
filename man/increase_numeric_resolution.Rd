@@ -24,17 +24,19 @@ numeric vector
 Increase numeric vector resolution
 }
 \details{
-if we have a vector v = c(1, 2), and we choose the \code{interpolate} method,
-then:
+Each original value opens a block of \code{n} output values. With \code{interpolate}
+the block runs linearly from the value towards the next one; the last value
+has no successor, so its block holds the value itself. If we have a vector
+v = c(1, 2) and choose the \code{interpolate} method, then:
 
 \code{increase_numeric_resolution(v, 4, 'interpolate')}
 
-returns \code{c(1, 1.25, 1.5, 1.75, 2)}
+returns \code{c(1, 1.25, 1.5, 1.75, 2, 2, 2, 2)}
 
-if we choose the \code{repeat} method, then:
+If we choose the \code{repeat} method, then:
 
 \code{increase_numeric_resolution(v, 4, 'repeat')}
 
-returns c(1, 1, 1, 1, 2)
+returns \code{c(1, 1, 1, 1, 2, 2, 2, 2)}
 }
 \keyword{internal}

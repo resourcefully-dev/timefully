@@ -126,18 +126,20 @@ interpolation <- function(y1, y2, n) {
 #' @importFrom purrr pmap simplify
 #'
 #' @details
-#' if we have a vector v = c(1, 2), and we choose the `interpolate` method,
-#' then:
+#' Each original value opens a block of `n` output values. With `interpolate`
+#' the block runs linearly from the value towards the next one; the last value
+#' has no successor, so its block holds the value itself. If we have a vector
+#' v = c(1, 2) and choose the `interpolate` method, then:
 #'
 #' `increase_numeric_resolution(v, 4, 'interpolate')`
 #'
-#' returns `c(1, 1.25, 1.5, 1.75, 2)`
+#' returns `c(1, 1.25, 1.5, 1.75, 2, 2, 2, 2)`
 #'
-#' if we choose the `repeat` method, then:
+#' If we choose the `repeat` method, then:
 #'
 #' `increase_numeric_resolution(v, 4, 'repeat')`
 #'
-#' returns c(1, 1, 1, 1, 2)
+#' returns `c(1, 1, 1, 1, 2, 2, 2, 2)`
 #'
 increase_numeric_resolution <- function(
   y,
@@ -145,7 +147,10 @@ increase_numeric_resolution <- function(
   method = c('interpolate', 'repeat', 'divide')
 ) {
   if (method == 'interpolate') {
-    tibble(y1 = y, y2 = lead(y, default = 0)) |>
+    # The last value has nothing to interpolate towards: hold it instead of
+    # ramping down to 0, which would end every upsampled series with a slide
+    # to zero regardless of what the data was doing.
+    tibble(y1 = y, y2 = lead(y, default = y[length(y)])) |>
       pmap(~ interpolation(..1, ..2, n)) |>
       simplify() |>
       as.double()
